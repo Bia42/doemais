@@ -8,9 +8,9 @@ public class BDConfig {
 
 	public static Connection getConnection() {
 
-		String usuario = "doemaissa";
-		String senha = "D03m@I$sa";
-		String url = "jdbc:sqlserver://doemais.database.windows.net:1433;databaseName=DoeMais" + ";user="
+		String usuario = "sa";
+		String senha = "Nicom2113$";
+		String url = "jdbc:sqlserver://doemais.cqpqpjj8wkwg.us-east-1.rds.amazonaws.com:1433;databaseName=doemais" + ";user="
 				+ usuario + ";password=" + senha + ";";
 
 		Connection conexao = null;
