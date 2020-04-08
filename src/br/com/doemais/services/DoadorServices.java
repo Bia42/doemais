@@ -34,14 +34,17 @@ public class DoadorServices {
 	@Path("/login")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)	
 	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	public Doador login(Doador doador) {
+	public Response login(Doador doador) {
 		
 		try {
 			doador = doadorDAO.realizarLogin(doador.getEmail(), doador.getSenha());
+			if(doador != null) {
+				return Response.status(200).entity(doador).build();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return doador;
+		return Response.status(404).entity("Email ou senha incorretos").build();
 	}
 	@GET
 	@Path("/list")
