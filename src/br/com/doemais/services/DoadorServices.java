@@ -10,6 +10,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import br.com.doemais.dao.DoadorDAO;
 import br.com.doemais.dao.UsuarioDAO;
@@ -58,20 +59,20 @@ public class DoadorServices {
 	@POST
 	@Path("/add")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	@Produces(MediaType.TEXT_PLAIN)
-	public String addDoador(Doador doador) {
+	public Response addDoador(Doador doador) {
 		String msg = "";
 
 		try {
 			int idGerado = doadorDAO.addDoador(doador);
 
 			msg = String.valueOf(idGerado);
+			return Response.status(201).build();
 		} catch (Exception e) {
 			msg = "Erro ao add a nota!";
 			e.printStackTrace();
 		}
 
-		return msg;
+		return Response.status(404).entity(msg).build();
 	}
 
 	/*
