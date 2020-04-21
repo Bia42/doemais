@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import br.com.doemais.dao.HemocentroDAO;
+import br.com.doemais.dbo.Hemocentro;
 import br.com.doemais.dbo.UsuariosHemocentro;
 
 
@@ -44,12 +45,24 @@ public class HemocentroServices {
 		return Response.status(404).entity("Email ou senha incorretos").build();
 	}
 	@GET
-	@Path("/list")
+	@Path("/listUser")
 	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	public List<UsuariosHemocentro> listarNotas() {
+	public List<UsuariosHemocentro> listarUsers() {
 		List<UsuariosHemocentro> lista = null;
 		try {
 			lista = hemocentroDAO.listarUsuarios();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
+	@GET
+	@Path("/listHemocentros")
+	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	public List<Hemocentro> listarHemocentros() {
+		List<Hemocentro> lista = null;
+		try {
+			lista = hemocentroDAO.listarHemocentros();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -59,7 +72,7 @@ public class HemocentroServices {
 	@POST
 	@Path("/add")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	public Response addDoador(UsuariosHemocentro userHemo) {
+	public Response addUserHemocentro(UsuariosHemocentro userHemo) {
 		String msg = "";
 
 		try {
@@ -67,6 +80,7 @@ public class HemocentroServices {
 
 			msg = String.valueOf(idGerado);
 			return Response.status(201).build();
+			
 		} catch (Exception e) {
 			msg = "Erro ao add a nota!";
 			e.printStackTrace();

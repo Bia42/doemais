@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.doemais.config.BDConfig;
-import br.com.doemais.dbo.Doador;
+import br.com.doemais.dbo.Hemocentro;
 import br.com.doemais.dbo.UsuariosHemocentro;
 
 
@@ -44,6 +44,35 @@ public class HemocentroDAO {
 			userHemo.setId(rs.getInt("hemocentro_id"));
 
 			lista.add(userHemo);
+		}
+
+		return lista;
+	}
+	
+	public List<Hemocentro> listarHemocentros() throws Exception {
+		List<Hemocentro> lista = new ArrayList<>();
+
+		Connection conexao = BDConfig.getConnection();
+
+		String sql = "select * from Hemocentro";
+
+		PreparedStatement statement = conexao.prepareStatement(sql);
+		ResultSet rs = statement.executeQuery();
+
+		while (rs.next()) {
+			Hemocentro hemo = new Hemocentro();
+			hemo.setId(rs.getInt("ID"));
+			hemo.setRazaoSocial(rs.getString("razao_social"));
+			hemo.setCnpj(rs.getString("cnpj"));
+			hemo.setEndereco(rs.getString("endereco"));
+			hemo.setCidade(rs.getString("cidade"));
+			hemo.setEstado(rs.getString("estado"));
+			hemo.setNumero(rs.getString("numero"));
+			hemo.setCep(rs.getString("cep"));
+			hemo.setComplemento(rs.getString("complemento"));
+			hemo.setLongitude(rs.getString("longitude"));
+			hemo.setLatitude(rs.getString("latitude"));
+			lista.add(hemo);
 		}
 
 		return lista;
@@ -90,7 +119,7 @@ public class HemocentroDAO {
 		Connection conexao = BDConfig.getConnection();
 
 		String sql = "INSERT INTO UsuariosHemocentro(nome, email, senha, data_nascimento, cpf, telefone, hemocentro_id,endereco, cidade,estado, numero,"
-				+ " cep, complemento, longitude, latitude) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,? , ? ,?)";
+				+ " cep, complemento, longitude, latitude,sexo) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,? , ? ,?, ?)";
 
 		PreparedStatement statement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		statement.setString(1, userHemo.getNome());
@@ -108,6 +137,7 @@ public class HemocentroDAO {
 		statement.setString(13, userHemo.getComplemento());
 		statement.setString(14, userHemo.getLongitude());
 		statement.setString(15, userHemo.getLatitude());		
+		statement.setString(16, userHemo.getSexo());		
 
 		statement.execute();
 		

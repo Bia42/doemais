@@ -1,16 +1,12 @@
 package br.com.doemais.dbo;
 
-public class UsuariosHemocentro {
+public class Hemocentro {
 	
 	private Integer id;
-	private String nome;
-	private String sexo;
-	private String dataNascimento;
-	private String cpf;
+	private String razaoSocial;
+	private String cnpj;
 	private String telefone;
 	private String email;
-	private String senha;
-	private String funcao;
 	private String endereco;
 	private String cidade;
 	private String estado;
@@ -19,30 +15,24 @@ public class UsuariosHemocentro {
 	private String cep;
 	private String longitude;
 	private String latitude;
-	private int hemocentroId;
-	public int getId() {
+	
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getNome() {
-		return nome;
+	public String getRazaoSocial() {
+		return razaoSocial;
 	}
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setRazaoSocial(String razaoSocial) {
+		this.razaoSocial = razaoSocial;
 	}
-	public String getDataNascimento() {
-		return dataNascimento;
+	public String getCnpj() {
+		return cnpj;
 	}
-	public void setDataNascimento(String dataNascimento) {
-		this.dataNascimento = dataNascimento;
-	}
-	public String getCpf() {
-		return cpf;
-	}
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
+	public void setCnpj(String cnpj) {
+		this.cnpj = cnpj;
 	}
 	public String getTelefone() {
 		return telefone;
@@ -55,18 +45,6 @@ public class UsuariosHemocentro {
 	}
 	public void setEmail(String email) {
 		this.email = email;
-	}
-	public String getSenha() {
-		return senha;
-	}
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
-	public String getFuncao() {
-		return funcao;
-	}
-	public void setFuncao(String funcao) {
-		this.funcao = funcao;
 	}
 	public String getEndereco() {
 		return endereco;
@@ -116,23 +94,5 @@ public class UsuariosHemocentro {
 	public void setLatitude(String latitude) {
 		this.latitude = latitude;
 	}
-	public int getHemocentroId() {
-		return hemocentroId;
-	}
-	public void setHemocentroId(int hemocentroId) {
-		this.hemocentroId = hemocentroId;
-	}
-	public String getSexo() {
-		return sexo;
-	}
-	public void setSexo(String sexo) {
-		this.sexo = sexo;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	
-	
-	
 	
 }
