@@ -119,7 +119,7 @@ public class HemocentroDAO {
 		Connection conexao = BDConfig.getConnection();
 
 		String sql = "INSERT INTO UsuariosHemocentro(nome, email, senha, data_nascimento, cpf, telefone, hemocentro_id,endereco, cidade,estado, numero,"
-				+ " cep, complemento, longitude, latitude,sexo) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,? , ? ,?, ?)";
+				+ " cep, complemento, longitude, latitude,sexo,funcao) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,? , ? ,?, ?,?)";
 
 		PreparedStatement statement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		statement.setString(1, userHemo.getNome());
@@ -138,6 +138,7 @@ public class HemocentroDAO {
 		statement.setString(14, userHemo.getLongitude());
 		statement.setString(15, userHemo.getLatitude());		
 		statement.setString(16, userHemo.getSexo());		
+		statement.setString(17, userHemo.getFuncao());		
 
 		statement.execute();
 		
