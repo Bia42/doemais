@@ -15,10 +15,9 @@ import br.com.doemais.dao.DoadorDAO;
 import br.com.doemais.dbo.Doacoes;
 import br.com.doemais.dbo.Doador;
 
-
 @Path("/doador")
 public class DoadorServices {
-	
+
 	private static final String CHARSET_UTF8 = ";charset=utf-8";
 
 	private DoadorDAO doadorDAO;
@@ -30,20 +29,26 @@ public class DoadorServices {
 
 	@POST
 	@Path("/login")
-	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)	
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
 	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
 	public Response login(Doador doador) {
-		
+		Doador doadorLogado = null;
 		try {
-			doador = doadorDAO.realizarLogin(doador.getEmail(), doador.getSenha());
-			if(doador != null) {
-				return Response.status(200).entity(doador).build();
+			doadorLogado = doadorDAO.realizarLogin(doador.getEmail(), doador.getSenha());
+			if (doadorLogado != null) {
+				return Response.status(200).entity(doadorLogado).build();
+			}
+			if (doadorDAO.verificarUserExistente(doador.getEmail())) {
+				return Response.status(404).entity("Senha incorreta!").build();
+			} else {
+				return Response.status(404).entity("Usuário não cadastrado").build();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return Response.status(404).entity("Email ou senha incorretos").build();
 	}
+
 	@GET
 	@Path("/list")
 	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
@@ -56,7 +61,7 @@ public class DoadorServices {
 		}
 		return lista;
 	}
-	
+
 	@POST
 	@Path("/add")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
@@ -64,18 +69,22 @@ public class DoadorServices {
 		String msg = "";
 
 		try {
-			int idGerado = doadorDAO.addDoador(doador);
-
-			msg = String.valueOf(idGerado);
+			if (doadorDAO.verificarUserExistente(doador.getEmail())) {
+				return Response.status(404).entity("Email existente!").build();
+			} else if (doadorDAO.verificarCpfExistente(doador.getCpf())) {
+				return Response.status(404).entity("CPF já utilizado").build();
+			} else {
+				int idGerado = doadorDAO.addDoador(doador);
+			}
 			return Response.status(201).build();
 		} catch (Exception e) {
-			msg = "Erro ao add a nota!";
+			msg = "Erro ao add o usuário, entre em contato com o administrador!" + e.getMessage();
 			e.printStackTrace();
 		}
 
 		return Response.status(404).entity(msg).build();
 	}
-	
+
 	@POST
 	@Path("/atualizaDoacao")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
@@ -84,7 +93,7 @@ public class DoadorServices {
 
 		try {
 			boolean response = doadorDAO.updateDoacao(doacoes.getId(), doacoes.getConfirmacao());
-			if(response == true)
+			if (response == true)
 				return Response.status(200).build();
 		} catch (Exception e) {
 			msg = "Erro ao add a nota!";
@@ -93,10 +102,11 @@ public class DoadorServices {
 
 		return Response.status(404).entity(msg).build();
 	}
+
 	@POST
 	@Path("/listDoacoes")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)	
+	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
 	public List<Doacoes> listDoacoes(Doacoes doacoes) {
 		String msg = "";
 		List<Doacoes> lista = null;
@@ -113,80 +123,68 @@ public class DoadorServices {
 	}
 
 	/*
-	@GET
-	@Path("/get/{id}")
-	@Consumes(MediaType.TEXT_PLAIN)
-	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	public Usuario buscarPorId(@PathParam("id") int id) {
-		Usuario usuario = null;
-		try {
-			usuario = usuarioDAO.buscarUsuarioPorId(id);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return usuario;
-		//Teste
-	}
-	
-	
-	
-
-	@GET
-	@Path("/get/{id}")
-	@Consumes(MediaType.TEXT_PLAIN)
-	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	public Nota buscarPorId(@PathParam("id") int idNota) {
-		Nota nota = null;
-		try {
-			nota = usuarioDAO.buscarNotaPorId(idNota);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return nota;
-	}
-
-	@PUT
-	@Path("/edit/{id}")
-	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	@Produces(MediaType.TEXT_PLAIN)
-	public String editarNota(Nota nota, @PathParam("id") int idNota) {
-		String msg = "";
-
-		System.out.println(nota.getTitulo());
-
-		try {
-			usuarioDAO.editarNota(nota, idNota);
-
-			msg = "Nota editada com sucesso!";
-		} catch (Exception e) {
-			msg = "Erro ao editar a nota!";
-			e.printStackTrace();
-		}
-
-		return msg;
-	}
-
-	@DELETE
-	@Path("/delete/{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.TEXT_PLAIN)
-	public String removerNota(@PathParam("id") int idNota) {
-		String msg = "";
-
-		try {
-			usuarioDAO.removerNota(idNota);
-
-			msg = "Nota removida com sucesso!";
-		} catch (Exception e) {
-			msg = "Erro ao remover a nota!";
-			e.printStackTrace();
-		}
-
-		return msg;
-	}
-
-	
-	*/
+	 * @GET
+	 * 
+	 * @Path("/get/{id}")
+	 * 
+	 * @Consumes(MediaType.TEXT_PLAIN)
+	 * 
+	 * @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8) public Usuario
+	 * buscarPorId(@PathParam("id") int id) { Usuario usuario = null; try { usuario
+	 * = usuarioDAO.buscarUsuarioPorId(id); } catch (Exception e) {
+	 * e.printStackTrace(); } return usuario; //Teste }
+	 * 
+	 * 
+	 * 
+	 * 
+	 * @GET
+	 * 
+	 * @Path("/get/{id}")
+	 * 
+	 * @Consumes(MediaType.TEXT_PLAIN)
+	 * 
+	 * @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8) public Nota
+	 * buscarPorId(@PathParam("id") int idNota) { Nota nota = null; try { nota =
+	 * usuarioDAO.buscarNotaPorId(idNota); } catch (Exception e) {
+	 * e.printStackTrace(); }
+	 * 
+	 * return nota; }
+	 * 
+	 * @PUT
+	 * 
+	 * @Path("/edit/{id}")
+	 * 
+	 * @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	 * 
+	 * @Produces(MediaType.TEXT_PLAIN) public String editarNota(Nota
+	 * nota, @PathParam("id") int idNota) { String msg = "";
+	 * 
+	 * System.out.println(nota.getTitulo());
+	 * 
+	 * try { usuarioDAO.editarNota(nota, idNota);
+	 * 
+	 * msg = "Nota editada com sucesso!"; } catch (Exception e) { msg =
+	 * "Erro ao editar a nota!"; e.printStackTrace(); }
+	 * 
+	 * return msg; }
+	 * 
+	 * @DELETE
+	 * 
+	 * @Path("/delete/{id}")
+	 * 
+	 * @Consumes(MediaType.APPLICATION_JSON)
+	 * 
+	 * @Produces(MediaType.TEXT_PLAIN) public String removerNota(@PathParam("id")
+	 * int idNota) { String msg = "";
+	 * 
+	 * try { usuarioDAO.removerNota(idNota);
+	 * 
+	 * msg = "Nota removida com sucesso!"; } catch (Exception e) { msg =
+	 * "Erro ao remover a nota!"; e.printStackTrace(); }
+	 * 
+	 * return msg; }
+	 * 
+	 * 
+	 */
 
 }
