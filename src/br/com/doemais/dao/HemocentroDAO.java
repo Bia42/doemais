@@ -113,6 +113,38 @@ public class HemocentroDAO {
 
 		return userHemo;
 	}
+	
+	public boolean verificarCpfExistente(String cpf) throws Exception {
+		Connection conexao = BDConfig.getConnection();
+
+		String sql = "SELECT * FROM UsuariosHemocentro WHERE cpf = ?";
+
+		PreparedStatement statement = conexao.prepareStatement(sql);
+		statement.setString(1, cpf);
+
+		ResultSet rs = statement.executeQuery();
+
+		if (rs.next()) {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean verificarUserExistente(String email) throws Exception {
+		Connection conexao = BDConfig.getConnection();
+
+		String sql = "SELECT * FROM UsuariosHemocentro WHERE email = ?";
+
+		PreparedStatement statement = conexao.prepareStatement(sql);
+		statement.setString(1, email);
+
+		ResultSet rs = statement.executeQuery();
+
+		if (rs.next()) {
+			return true;
+		}
+		return false;
+	}
 
 	public int addUsuarioHemocentro(UsuariosHemocentro userHemo) throws Exception {
 		int idGerado = 0;
