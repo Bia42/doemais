@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.doemais.config.BDConfig;
+import br.com.doemais.dbo.Doacoes;
 import br.com.doemais.dbo.Doador;
-import br.com.doemais.dbo.Usuario;
 
 
 public class DoadorDAO {
@@ -43,6 +43,32 @@ public class DoadorDAO {
 			doador.setLatitude(rs.getString("latitude"));
 
 			lista.add(doador);
+		}
+
+		return lista;
+	}
+	public List<Doacoes> listarDoaocoes(int doadorId) throws Exception {
+		List<Doacoes> lista = new ArrayList<>();
+
+		Connection conexao = BDConfig.getConnection();
+
+		String sql = "select * from doacoes where doador_id = ? and confirmacao = '0'";
+
+		PreparedStatement statement = conexao.prepareStatement(sql);
+		statement.setInt(1, doadorId);
+
+		ResultSet rs = statement.executeQuery();
+
+		while (rs.next()) {
+			Doacoes doacoes = new Doacoes();
+			doacoes.setId(rs.getInt("ID"));
+			doacoes.setDoadorId(rs.getInt("doador_id"));
+			doacoes.setHemocentroId(rs.getInt("hemocentro_id"));
+			doacoes.setDataHora(rs.getString("data_hora"));
+			doacoes.setQuantidade(rs.getInt("quantidade"));
+			doacoes.setConfirmacao(rs.getInt("confirmacao"));
+
+			lista.add(doacoes);
 		}
 
 		return lista;
@@ -90,8 +116,7 @@ public class DoadorDAO {
 
 		String sql = "INSERT INTO Doador(nome, email, senha, data_nascimento, cpf, telefone, tipo_sanguineo,endereco, cidade,estado, numero,"
 				+ " cep, complemento, longitude, latitude) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,? , ? ,?)";
-
-		PreparedStatement statement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+		PreparedStatement statement = conexao.prepareStatement(sql);
 		statement.setString(1, doador.getNome());
 		statement.setString(2, doador.getEmail());
 		statement.setString(3, doador.getSenha());
@@ -116,6 +141,23 @@ public class DoadorDAO {
 		}
 		
 		return idGerado;
+	}
+	
+	public boolean updateDoacao(int doacaoId, int confirmacao) throws Exception {
+		Connection conexao = BDConfig.getConnection();
+
+		String sql = "update doacoes set confirmacao = ? where id = ?";
+
+		PreparedStatement statement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+		statement.setInt(1, confirmacao);
+		statement.setInt(2, doacaoId);
+
+		int updateCount = statement.executeUpdate();
+		
+		if(updateCount == 1) {
+			return true;
+		}
+		return false;
 	}
 	
 }

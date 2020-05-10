@@ -7,15 +7,13 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import br.com.doemais.dao.DoadorDAO;
-import br.com.doemais.dao.UsuarioDAO;
+import br.com.doemais.dbo.Doacoes;
 import br.com.doemais.dbo.Doador;
-import br.com.doemais.dbo.Usuario;
 
 
 @Path("/doador")
@@ -76,6 +74,42 @@ public class DoadorServices {
 		}
 
 		return Response.status(404).entity(msg).build();
+	}
+	
+	@POST
+	@Path("/atualizaDoacao")
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	public Response addDoador(Doacoes doacoes) {
+		String msg = "";
+
+		try {
+			boolean response = doadorDAO.updateDoacao(doacoes.getId(), doacoes.getConfirmacao());
+			if(response == true)
+				return Response.status(200).build();
+		} catch (Exception e) {
+			msg = "Erro ao add a nota!";
+			e.printStackTrace();
+		}
+
+		return Response.status(404).entity(msg).build();
+	}
+	@POST
+	@Path("/listDoacoes")
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)	
+	public List<Doacoes> listDoacoes(Doacoes doacoes) {
+		String msg = "";
+		List<Doacoes> lista = null;
+		try {
+			lista = doadorDAO.listarDoaocoes(doacoes.getDoadorId());
+
+			return lista;
+		} catch (Exception e) {
+			msg = "Erro a listar doações";
+			e.printStackTrace();
+		}
+
+		return lista;
 	}
 
 	/*
