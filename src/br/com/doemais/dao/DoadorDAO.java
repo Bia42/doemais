@@ -84,7 +84,12 @@ public class DoadorDAO {
 
 		Connection conexao = BDConfig.getConnection();
 
-		String sql = "select * from doacoes where doador_id = ? and confirmacao = '0'";
+		String sql = "select "
+				+ "	a.ID idDoacao, a.doador_id, a.hemocentro_id, a.data_hora, a.quantidade, a.confirmacao, b.razao_social"
+				+ "	from "
+				+ "	doacoes a" + 
+				"	inner join Hemocentro b on a.hemocentro_id = b.id "
+				+ " where doador_id = ? and confirmacao = '0'";
 
 		PreparedStatement statement = conexao.prepareStatement(sql);
 		statement.setInt(1, doadorId);
@@ -93,13 +98,13 @@ public class DoadorDAO {
 
 		while (rs.next()) {
 			Doacoes doacoes = new Doacoes();
-			doacoes.setId(rs.getInt("ID"));
+			doacoes.setId(rs.getInt("idDoacao"));
 			doacoes.setDoadorId(rs.getInt("doador_id"));
 			doacoes.setHemocentroId(rs.getInt("hemocentro_id"));
 			doacoes.setDataHora(rs.getString("data_hora"));
 			doacoes.setQuantidade(rs.getInt("quantidade"));
 			doacoes.setConfirmacao(rs.getInt("confirmacao"));
-
+			doacoes.setHemoRazaoSocial(rs.getString("razao_social"));
 			lista.add(doacoes);
 		}
 

@@ -8,6 +8,7 @@ public class Doacoes {
 	private int doadorId;
 	private int hemocentroId;
 	private int confirmacao;
+	private String hemoRazaoSocial;
 	
 	public int getId() {
 		return id;
@@ -44,6 +45,12 @@ public class Doacoes {
 	}
 	public void setConfirmacao(int confirmacao) {
 		this.confirmacao = confirmacao;
+	}
+	public String getHemoRazaoSocial() {
+		return hemoRazaoSocial;
+	}
+	public void setHemoRazaoSocial(String hemoRazaoSocial) {
+		this.hemoRazaoSocial = hemoRazaoSocial;
 	}
 	
 	
