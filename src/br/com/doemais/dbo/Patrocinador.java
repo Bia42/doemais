@@ -1,8 +1,8 @@
 package br.com.doemais.dbo;
 
-public class Hemocentro {
+public class Patrocinador {
 	
-	private Integer hemocentroId;
+	private Integer id;
 	private String razaoSocial;
 	private String cnpj;
 	private String telefone;
@@ -13,15 +13,22 @@ public class Hemocentro {
 	private String complemento;
 	private String numero;
 	private String cep;
-	private String longitude;
-	private String latitude;
-	private String horarios;
-
-	public Integer getHemocentroId() {
-		return hemocentroId;
+	private String nivel;
+	private String senha;
+	
+	public byte[] getLogo() {
+		return logo;
 	}
-	public void setHemocentroId(Integer hemocentroId) {
-		this.hemocentroId = hemocentroId;
+	public void setLogo(byte[] logo) {
+		this.logo = logo;
+	}
+	private byte[] logo;
+	
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
 	}
 	public String getRazaoSocial() {
 		return razaoSocial;
@@ -83,25 +90,20 @@ public class Hemocentro {
 	public void setCep(String cep) {
 		this.cep = cep;
 	}
-	public String getLongitude() {
-		return longitude;
+	public String getNivel() {
+		return nivel;
 	}
-	public void setLongitude(String longitude) {
-		this.longitude = longitude;
+	public void setNivel(String nivel) {
+		this.nivel = nivel;
 	}
-	public String getLatitude() {
-		return latitude;
+	public String getSenha() {
+		return senha;
 	}
-	public void setLatitude(String latitude) {
-		this.latitude = latitude;
-	}
-	public String getHorarios() {
-		return horarios;
-	}
-	public void setHorarios(String horarios) {
-		this.horarios = horarios;
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 	
+
 	
 	
 }

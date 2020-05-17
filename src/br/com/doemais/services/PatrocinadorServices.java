@@ -11,35 +11,34 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import br.com.doemais.dao.HemocentroDAO;
-import br.com.doemais.dbo.Doacoes;
-import br.com.doemais.dbo.Hemocentro;
-import br.com.doemais.dbo.UsuariosHemocentro;
+import br.com.doemais.dao.PatrocinadorDAO;
+import br.com.doemais.dbo.Cupom;
+import br.com.doemais.dbo.Patrocinador;
 
-@Path("/hemocentro")
-public class HemocentroServices {
+@Path("/patrocinador")
+public class PatrocinadorServices {
 
 	private static final String CHARSET_UTF8 = ";charset=utf-8";
 
-	private HemocentroDAO hemocentroDAO;
+	private PatrocinadorDAO patrocinadorDAO;
 
 	@PostConstruct
 	private void init() {
-		hemocentroDAO = new HemocentroDAO();
+		patrocinadorDAO = new PatrocinadorDAO();
 	}
 
 	@POST
 	@Path("/login")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
 	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	public Response login(UsuariosHemocentro userHemo) {
-		UsuariosHemocentro userHemoLogado = null;
+	public Response login(Patrocinador pat) {
+		Patrocinador patLogado = null;
 		try {
-			userHemoLogado = hemocentroDAO.realizarLogin(userHemo.getEmail(), userHemo.getSenha());
-			if (userHemoLogado != null) {
-				return Response.status(200).entity(userHemoLogado).build();
+			patLogado = patrocinadorDAO.realizarLogin(pat.getEmail(), pat.getSenha());
+			if (patLogado != null) {
+				return Response.status(200).entity(patLogado).build();
 			}
-			if (hemocentroDAO.verificarUserExistente(userHemo.getEmail())) {
+			if (patrocinadorDAO.verificarUserExistente(pat.getEmail())) {
 				return Response.status(404).entity("Senha incorreta!").build();
 			} else {
 				return Response.status(404).entity("Usuário não cadastrado").build();
@@ -52,44 +51,91 @@ public class HemocentroServices {
 	}
 
 	@GET
-	@Path("/listUser")
+	@Path("/listPatrocinadores")
 	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	public List<UsuariosHemocentro> listarUsers() {
-		List<UsuariosHemocentro> lista = null;
+	public List<Patrocinador> listarUsers() {
+		List<Patrocinador> lista = null;
 		try {
-			lista = hemocentroDAO.listarUsuarios();
+			lista = patrocinadorDAO.listarPatrocinadores();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return lista;
+	}
+	
+	@GET
+	@Path("/listCuponsAtivos")
+	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	public List<Cupom> listarCuponsAtivos() {
+		List<Cupom> lista = null;
+		try {
+			lista = patrocinadorDAO.listarCuponsDisponiveis();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
+	
+	@POST
+	@Path("/listCuponsAtivosPorPatrocinador")
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	public List<Cupom> listarCuponsAtivosPorPatrocinador(Cupom cupom) {
+		List<Cupom> lista = null;
+		try {
+			lista = patrocinadorDAO.listarCuponsDispoPat(cupom.getPatrocinadorId());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
+	
+	@POST
+	@Path("/gerarCupons")
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	public List<String> gerarCupons(Cupom cupom) {
+		List<String> lista = null;
+		try {
+			lista = patrocinadorDAO.geraCupons(cupom.getPatrocinadorId(), cupom.getQuantidade());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
+	
+	@POST
+	@Path("/vinculoCupom")
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	public Response addDoador(Cupom cupom) {
+		String msg = "";
+
+		try {
+			boolean response = patrocinadorDAO.vinculoCupom(cupom.getCupomId(), cupom.getDoadorId());
+			if (response == true)
+				return Response.status(200).build();
+		} catch (Exception e) {
+			msg = "Erro vincunlar cupom, contate o administrador do sistema";
+			e.printStackTrace();
+		}
+
+		return Response.status(404).entity(msg).build();
 	}
 
-	@GET
-	@Path("/listHemocentros")
-	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	public List<Hemocentro> listarHemocentros() {
-		List<Hemocentro> lista = null;
-		try {
-			lista = hemocentroDAO.listarHemocentros();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return lista;
-	}
 
 	@POST
 	@Path("/add")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	public Response addUserHemocentro(UsuariosHemocentro userHemo) {
+	public Response adduserPatrocinador(Patrocinador pat) {
 		String msg = "";
 
 		try {
-			if (hemocentroDAO.verificarUserExistente(userHemo.getEmail())) {
+			if (patrocinadorDAO.verificarUserExistente(pat.getEmail())) {
 				return Response.status(404).entity("Email existente!").build();
-			} else if (hemocentroDAO.verificarCpfExistente(userHemo.getCpf())) {
+			} else if (patrocinadorDAO.verificarCnpjExistente(pat.getCnpj())) {
 				return Response.status(404).entity("CPF já utilizado").build();
 			} else {
-				int idGerado = hemocentroDAO.addUsuarioHemocentro(userHemo);
+				int idGerado = patrocinadorDAO.addPatrocinador(pat);
 				msg = String.valueOf(idGerado);
 				return Response.status(201).entity("Usuário Cadastrado Com Sucesso").build();
 			}
@@ -100,25 +146,6 @@ public class HemocentroServices {
 
 		return Response.status(404).entity(msg).build();
 	}
-	
-	@POST
-	@Path("/atualizaDados")
-	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	public Response addDoador(Hemocentro hemocentro) {
-		String msg = "";
-
-		try {
-			boolean response = hemocentroDAO.updateHemocentro(hemocentro.getHemocentroId(), hemocentro.getHorarios());
-			if (response == true)
-				return Response.status(200).build();
-		} catch (Exception e) {
-			msg = "Erro ao atualizar os dados, entre em contato com o administrador!" + e.getMessage();
-			e.printStackTrace();
-		}
-
-		return Response.status(404).entity(msg).build();
-	}
-
 
 	/*
 	 * @GET

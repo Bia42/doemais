@@ -61,7 +61,7 @@ public class HemocentroDAO {
 
 		while (rs.next()) {
 			Hemocentro hemo = new Hemocentro();
-			hemo.setId(rs.getInt("ID"));
+			hemo.setHemocentroId(rs.getInt("ID"));
 			hemo.setRazaoSocial(rs.getString("razao_social"));
 			hemo.setCnpj(rs.getString("cnpj"));
 			hemo.setEndereco(rs.getString("endereco"));
@@ -76,6 +76,36 @@ public class HemocentroDAO {
 		}
 
 		return lista;
+	}
+	
+	public Hemocentro listarHemocentro(int hemocentroId) throws Exception {
+		Hemocentro hemo = null;
+		Connection conexao = BDConfig.getConnection();
+
+		String sql = "select * from Hemocentro where id = ?";
+	
+
+		PreparedStatement statement = conexao.prepareStatement(sql);
+		statement.setInt(1, hemocentroId);
+
+		ResultSet rs = statement.executeQuery();
+
+		while (rs.next()) {
+			hemo = new Hemocentro();
+			hemo.setHemocentroId(rs.getInt("ID"));
+			hemo.setRazaoSocial(rs.getString("razao_social"));
+			hemo.setCnpj(rs.getString("cnpj"));
+			hemo.setEndereco(rs.getString("endereco"));
+			hemo.setCidade(rs.getString("cidade"));
+			hemo.setEstado(rs.getString("estado"));
+			hemo.setNumero(rs.getString("numero"));
+			hemo.setCep(rs.getString("cep"));
+			hemo.setComplemento(rs.getString("complemento"));
+			hemo.setLongitude(rs.getString("longitude"));
+			hemo.setLatitude(rs.getString("latitude"));
+		}
+
+		return hemo;
 	}
 	
 	public UsuariosHemocentro realizarLogin(String email, String senha) throws Exception {
@@ -181,5 +211,23 @@ public class HemocentroDAO {
 		
 		return idGerado;
 	}
+	
+	public boolean updateHemocentro(int hemocentroId, String horarios) throws Exception {
+		Connection conexao = BDConfig.getConnection();
+
+		String sql = "update hemocentro set horarios = ? where id = ?";
+
+		PreparedStatement statement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+		statement.setString(1, horarios);
+		statement.setInt(2, hemocentroId);
+
+		int updateCount = statement.executeUpdate();
+		
+		if(updateCount == 1) {
+			return true;
+		}
+		return false;
+	}
+	
 	
 }
