@@ -76,6 +76,18 @@ public class PatrocinadorServices {
 		return lista;
 	}
 	
+	@GET
+	@Path("/cupomAutoGerado")
+	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	public Cupom listarCupomAutoGerado() {
+		Cupom cupom = null;
+		try {
+			cupom = patrocinadorDAO.listarCupomAutoGerado();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return cupom;
+	}
 	@POST
 	@Path("/listCuponsAtivosPorPatrocinador")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
@@ -120,6 +132,20 @@ public class PatrocinadorServices {
 		}
 
 		return Response.status(404).entity(msg).build();
+	}
+	
+	
+	@POST
+	@Path("/cupomPorDoador")
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	public List<Cupom> cupomDoador(Cupom cupom) {
+		List<Cupom> lista = null;
+		try {
+			lista = patrocinadorDAO.listarCuponsDoador(cupom.getDoadorId());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
 	}
 
 
