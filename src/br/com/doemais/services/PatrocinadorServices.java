@@ -109,7 +109,7 @@ public class PatrocinadorServices {
 	public List<String> gerarCupons(Cupom cupom) {
 		List<String> lista = null;
 		try {
-			lista = patrocinadorDAO.geraCupons(cupom.getPatrocinadorId(), cupom.getQuantidade());
+			lista = patrocinadorDAO.geraCupons(cupom.getPatrocinadorId(), cupom.getQuantidade(), cupom.getDescricao());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -234,7 +234,7 @@ public class PatrocinadorDAO {
 		return idGerado;
 	}
 	
-	public List<String> geraCupons(int patrocinadorId, int quantidade) throws Exception {
+	public List<String> geraCupons(int patrocinadorId, int quantidade, String descricao) throws Exception {
 
 		List<String> cuponsGerados = new ArrayList<>();
 		
@@ -247,11 +247,13 @@ public class PatrocinadorDAO {
 		for(int i = 0; i < quantidade; i ++) {
 			
 			cupomGerado = cupom.geradorDeCupom(patrocinadorId);
-			String sql = "insert into cupom(cupom, patrocinador_id) values(?,?)";
+			String sql = "insert into cupom(cupom, patrocinador_id, descricao) values(?,?,?)";
 			
 			PreparedStatement statement = conexao.prepareStatement(sql);
 			statement.setString(1, cupomGerado);
 			statement.setInt(2, patrocinadorId);
+			statement.setString(3, descricao);
+
 			statement.execute();
 			cuponsGerados.add(cupomGerado);
 		}
