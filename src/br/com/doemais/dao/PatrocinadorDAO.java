@@ -92,7 +92,7 @@ public class PatrocinadorDAO {
 
 		Connection conexao = BDConfig.getConnection();
 
-		String sql = "select a.id idCupom, cupom, patrocinador_id, b.razao_social,descricao patrocinador from Cupom a inner join patrocinador b on a.patrocinador_id = b.id where usuario_id is null and b.id = ?";
+		String sql = "select a.id idCupom, cupom, patrocinador_id, b.razao_social patrocinador , descricao from Cupom a inner join patrocinador b on a.patrocinador_id = b.id where usuario_id is null and b.id = ?";
 
 		PreparedStatement statement = conexao.prepareStatement(sql);
 		statement.setInt(1, patrocinadorId);
