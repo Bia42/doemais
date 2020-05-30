@@ -36,7 +36,7 @@ public class PatrocinadorDAO {
 			pat.setNumero(rs.getString("numero"));
 			pat.setCep(rs.getString("cep"));
 			pat.setComplemento(rs.getString("complemento"));
-			pat.setLogo(rs.getBytes("logo"));
+		//	pat.setLogo(rs.getBytes("logo"));
 			lista.add(pat);
 		}
 
@@ -48,7 +48,7 @@ public class PatrocinadorDAO {
 
 		Connection conexao = BDConfig.getConnection();
 
-		String sql = "select a.id idCupom, cupom, patrocinador_id, b.razao_social patrocinador from Cupom a inner join patrocinador b on a.patrocinador_id = b.id where usuario_id is null";
+		String sql = "select a.id idCupom, cupom, patrocinador_id, b.razao_social patrocinador, descricao from Cupom a inner join patrocinador b on a.patrocinador_id = b.id where usuario_id is null";
 
 		PreparedStatement statement = conexao.prepareStatement(sql);
 		ResultSet rs = statement.executeQuery();
@@ -59,6 +59,8 @@ public class PatrocinadorDAO {
 			cupom.setPatrocinadorId(rs.getInt("patrocinador_id"));
 			cupom.setPatrocinador(rs.getString("patrocinador"));
 			cupom.setCupom(rs.getString("cupom"));
+			cupom.setDescricao(rs.getString("descricao"));
+
 			lista.add(cupom);
 		}
 		return lista;
@@ -68,7 +70,7 @@ public class PatrocinadorDAO {
 
 		Connection conexao = BDConfig.getConnection();
 
-		String sql = "select top 1 a.id idCupom, cupom, patrocinador_id, b.razao_social patrocinador from Cupom a inner join patrocinador b on a.patrocinador_id = b.id where usuario_id is null";
+		String sql = "select top 1 a.id idCupom, cupom, patrocinador_id, b.razao_social patrocinador, descricao from Cupom a inner join patrocinador b on a.patrocinador_id = b.id where usuario_id is null";
 
 		PreparedStatement statement = conexao.prepareStatement(sql);
 		ResultSet rs = statement.executeQuery();
@@ -79,6 +81,8 @@ public class PatrocinadorDAO {
 			cupom.setPatrocinadorId(rs.getInt("patrocinador_id"));
 			cupom.setPatrocinador(rs.getString("patrocinador"));
 			cupom.setCupom(rs.getString("cupom"));
+			cupom.setDescricao(rs.getString("descricao"));
+
 		}
 		return cupom;
 	}
@@ -88,7 +92,7 @@ public class PatrocinadorDAO {
 
 		Connection conexao = BDConfig.getConnection();
 
-		String sql = "select a.id idCupom, cupom, patrocinador_id, b.razao_social patrocinador from Cupom a inner join patrocinador b on a.patrocinador_id = b.id where usuario_id is null and b.id = ?";
+		String sql = "select a.id idCupom, cupom, patrocinador_id, b.razao_social,descricao patrocinador from Cupom a inner join patrocinador b on a.patrocinador_id = b.id where usuario_id is null and b.id = ?";
 
 		PreparedStatement statement = conexao.prepareStatement(sql);
 		statement.setInt(1, patrocinadorId);
@@ -101,6 +105,7 @@ public class PatrocinadorDAO {
 			cupom.setPatrocinadorId(rs.getInt("patrocinador_id"));
 			cupom.setPatrocinador(rs.getString("patrocinador"));
 			cupom.setCupom(rs.getString("cupom"));
+			cupom.setDescricao(rs.getString("descricao"));
 			lista.add(cupom);
 		}
 		return lista;
@@ -111,7 +116,7 @@ public class PatrocinadorDAO {
 
 		Connection conexao = BDConfig.getConnection();
 
-		String sql = "select a.id idCupom, cupom, patrocinador_id, b.razao_social patrocinador, usuario_id from Cupom a inner join patrocinador b on a.patrocinador_id = b.id where usuario_id = ?";
+		String sql = "select a.id idCupom, cupom, patrocinador_id, b.razao_social patrocinador, usuario_id, descricao from Cupom a inner join patrocinador b on a.patrocinador_id = b.id where usuario_id = ?";
 
 		PreparedStatement statement = conexao.prepareStatement(sql);
 		statement.setInt(1, doadorId);
@@ -125,6 +130,7 @@ public class PatrocinadorDAO {
 			cupom.setDoadorId(rs.getInt("usuario_id"));
 			cupom.setPatrocinador(rs.getString("patrocinador"));
 			cupom.setCupom(rs.getString("cupom"));
+			cupom.setDescricao(rs.getString("descricao"));
 			
 			lista.add(cupom);
 		}
@@ -156,7 +162,7 @@ public class PatrocinadorDAO {
 			pat.setNumero(rs.getString("numero"));
 			pat.setCep(rs.getString("cep"));
 			pat.setComplemento(rs.getString("complemento"));
-			pat.setLogo(rs.getBytes("logo"));
+		//	pat.setLogo(rs.getBytes("logo"));
 		}
 
 		return pat;
@@ -211,7 +217,7 @@ public class PatrocinadorDAO {
 		statement.setString(3, userPat.getSenha());
 		statement.setString(4, userPat.getCnpj());
 		statement.setString(5, userPat.getNivel());
-		statement.setBytes(6, userPat.getLogo());
+		statement.setBytes(6, null);
 		statement.setString(7, userPat.getEndereco());
 		statement.setString(8, userPat.getCidade());
 		statement.setString(9, userPat.getEstado());

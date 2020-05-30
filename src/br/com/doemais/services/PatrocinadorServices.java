@@ -154,12 +154,11 @@ public class PatrocinadorServices {
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
 	public Response adduserPatrocinador(Patrocinador pat) {
 		String msg = "";
-
 		try {
 			if (patrocinadorDAO.verificarUserExistente(pat.getEmail())) {
 				return Response.status(404).entity("Email existente!").build();
 			} else if (patrocinadorDAO.verificarCnpjExistente(pat.getCnpj())) {
-				return Response.status(404).entity("CPF já utilizado").build();
+				return Response.status(404).entity("CNPJ já utilizado").build();
 			} else {
 				int idGerado = patrocinadorDAO.addPatrocinador(pat);
 				msg = String.valueOf(idGerado);
