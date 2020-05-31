@@ -1,10 +1,5 @@
 package br.com.doemais.dbo;
 
-import java.io.File;
-import java.io.InputStream;
-
-import javax.imageio.stream.FileImageInputStream;
-
 public class Patrocinador {
 	
 	private Integer id;
@@ -20,13 +15,14 @@ public class Patrocinador {
 	private String cep;
 	private String nivel;
 	private String senha;
-	private InputStream logo;
+	private String logo;
 	
 	
-	public InputStream getLogo() {
+
+	public String getLogo() {
 		return logo;
 	}
-	public void setLogo(InputStream logo) {
+	public void setLogo(String logo) {
 		this.logo = logo;
 	}
 	public Integer getId() {

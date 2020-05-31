@@ -170,15 +170,15 @@ public class PatrocinadorServices {
 	public Response adduserPatrocinador(Patrocinador pat) {
 		String msg = "";
 		try {
-			if (patrocinadorDAO.verificarUserExistente(pat.getEmail())) {
-				return Response.status(404).entity("Email existente!").build();
-			} else if (patrocinadorDAO.verificarCnpjExistente(pat.getCnpj())) {
-				return Response.status(404).entity("CNPJ já utilizado").build();
-			} else {
+			//if (patrocinadorDAO.verificarUserExistente(pat.getEmail())) {
+			//	return Response.status(404).entity("Email existente!").build();
+			//} else if (patrocinadorDAO.verificarCnpjExistente(pat.getCnpj())) {
+			//	return Response.status(404).entity("CNPJ já utilizado").build();
+			//} else {
 				int idGerado = patrocinadorDAO.addPatrocinador(pat);
 				msg = String.valueOf(idGerado);
 				return Response.status(201).entity("Usuário Cadastrado Com Sucesso").build();
-			}
+			//}
 
 		} catch (Exception e) {
 			msg = "Erro ao add o usuário, entre em contato com o administrador!" + e.getMessage();

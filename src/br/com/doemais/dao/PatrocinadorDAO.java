@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import br.com.doemais.config.BDConfig;
@@ -36,7 +37,7 @@ public class PatrocinadorDAO {
 			pat.setNumero(rs.getString("numero"));
 			pat.setCep(rs.getString("cep"));
 			pat.setComplemento(rs.getString("complemento"));
-		//	pat.setLogo(rs.getBytes("logo"));
+			pat.setLogo(new String(rs.getBytes("logo"), "UTF-8"));
 			lista.add(pat);
 		}
 
@@ -237,14 +238,16 @@ public class PatrocinadorDAO {
 				+ " cnpj,"
 				+ " nivel, logo,endereco, cidade,estado, numero,"
 				+ " cep, complemento) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
+		byte[] decodedString = new String(userPat.getLogo().substring(userPat.getLogo().indexOf(",") + 1)).getBytes("UTF-8");
+		String bia = new String(decodedString, "UTF-8");
+		
 		PreparedStatement statement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		statement.setString(1, userPat.getRazaoSocial());
 		statement.setString(2, userPat.getEmail());
 		statement.setString(3, userPat.getSenha());
 		statement.setString(4, userPat.getCnpj());
 		statement.setString(5, userPat.getNivel());
-		statement.setBytes(6, null);
+		statement.setBytes(6, new String(userPat.getLogo().substring(userPat.getLogo().indexOf(",") + 1)).getBytes("UTF-8"));
 		statement.setString(7, userPat.getEndereco());
 		statement.setString(8, userPat.getCidade());
 		statement.setString(9, userPat.getEstado());
