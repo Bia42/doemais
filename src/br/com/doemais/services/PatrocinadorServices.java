@@ -103,6 +103,20 @@ public class PatrocinadorServices {
 	}
 	
 	@POST
+	@Path("/listCuponsResgatadosPorPatrocinador")
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	public List<Cupom> listarCuponsResgatadosPorPatrocinador(Cupom cupom) {
+		List<Cupom> lista = null;
+		try {
+			lista = patrocinadorDAO.listarCuponsResgaPat(cupom.getPatrocinadorId());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
+	
+	@POST
 	@Path("/gerarCupons")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
 	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)

@@ -111,6 +111,30 @@ public class PatrocinadorDAO {
 		return lista;
 	}
 	
+	public List<Cupom> listarCuponsResgaPat(int patrocinadorId) throws Exception {
+		List<Cupom> lista = new ArrayList<>();
+
+		Connection conexao = BDConfig.getConnection();
+
+		String sql = "select a.id idCupom, cupom, patrocinador_id, b.razao_social patrocinador , descricao from Cupom a inner join patrocinador b on a.patrocinador_id = b.id where usuario_id is not null and b.id = ?";
+
+		PreparedStatement statement = conexao.prepareStatement(sql);
+		statement.setInt(1, patrocinadorId);
+
+		ResultSet rs = statement.executeQuery();
+
+		while (rs.next()) {
+			Cupom cupom = new Cupom();
+			cupom.setCupomId(rs.getInt("idCupom"));
+			cupom.setPatrocinadorId(rs.getInt("patrocinador_id"));
+			cupom.setPatrocinador(rs.getString("patrocinador"));
+			cupom.setCupom(rs.getString("cupom"));
+			cupom.setDescricao(rs.getString("descricao"));
+			lista.add(cupom);
+		}
+		return lista;
+	}
+	
 	public List<Cupom> listarCuponsDoador(int doadorId) throws Exception {
 		List<Cupom> lista = new ArrayList<>();
 
