@@ -76,13 +76,14 @@ public class PatrocinadorServices {
 		return lista;
 	}
 	
-	@GET
+	@POST
 	@Path("/cupomAutoGerado")
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
 	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	public Cupom listarCupomAutoGerado() {
+	public Cupom listarCupomAutoGerado(Cupom cup) {
 		Cupom cupom = null;
 		try {
-			cupom = patrocinadorDAO.listarCupomAutoGerado();
+			cupom = patrocinadorDAO.listarCupomAutoGerado(cup.getDoadorId());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -65,9 +65,9 @@ public class PatrocinadorDAO {
 		}
 		return lista;
 	}
-	public Cupom listarCupomAutoGerado() throws Exception {
-		Cupom cupom = new Cupom();
-
+	public Cupom listarCupomAutoGerado(int doadorId) throws Exception {
+		Cupom cupom = null;
+		boolean result= false;
 		Connection conexao = BDConfig.getConnection();
 
 		String sql = "select top 1 a.id idCupom, cupom, patrocinador_id, b.razao_social patrocinador, descricao from Cupom a inner join patrocinador b on a.patrocinador_id = b.id where usuario_id is null";
@@ -76,12 +76,15 @@ public class PatrocinadorDAO {
 		ResultSet rs = statement.executeQuery();
 
 		while (rs.next()) {
-			cupom = new Cupom();
-			cupom.setCupomId(rs.getInt("idCupom"));
-			cupom.setPatrocinadorId(rs.getInt("patrocinador_id"));
-			cupom.setPatrocinador(rs.getString("patrocinador"));
-			cupom.setCupom(rs.getString("cupom"));
-			cupom.setDescricao(rs.getString("descricao"));
+			result = this.vinculoCupom(rs.getInt("idCupom"), doadorId);
+			if(result) {
+				cupom = new Cupom();
+				cupom.setCupomId(rs.getInt("idCupom"));
+				cupom.setPatrocinadorId(rs.getInt("patrocinador_id"));
+				cupom.setPatrocinador(rs.getString("patrocinador"));
+				cupom.setCupom(rs.getString("cupom"));
+				cupom.setDescricao(rs.getString("descricao"));
+			}
 
 		}
 		return cupom;
