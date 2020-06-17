@@ -153,7 +153,7 @@ public class DoadorDAO {
 
 		String sql = "INSERT INTO Doador(nome, email, senha, data_nascimento, cpf, telefone, tipo_sanguineo,endereco, cidade,estado, numero,"
 				+ " cep, complemento, longitude, latitude) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,? , ? ,?)";
-		PreparedStatement statement = conexao.prepareStatement(sql);
+		PreparedStatement statement = conexao.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
 		statement.setString(1, doador.getNome());
 		statement.setString(2, doador.getEmail());
 		statement.setString(3, doador.getSenha());
