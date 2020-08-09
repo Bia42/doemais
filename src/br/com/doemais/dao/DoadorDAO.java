@@ -115,7 +115,7 @@ public class DoadorDAO {
 		Doador doador = null;
 
 		Connection conexao = BDConfig.getConnection();
-
+		PreparedStatement stmtLog = null;
 		String sql = "SELECT * FROM doador WHERE email = ? and senha = ?";
 
 		PreparedStatement statement = conexao.prepareStatement(sql);
@@ -141,7 +141,9 @@ public class DoadorDAO {
 			doador.setComplemento(rs.getString("complemento"));
 			doador.setLongitude(rs.getString("longitude"));
 			doador.setLatitude(rs.getString("latitude"));
-
+			stmtLog = conexao.prepareStatement("exec log_add ?,null,'LOGIN','doador','APP_LOGIN'");
+			stmtLog.setInt(1, rs.getInt("ID"));
+			stmtLog.execute();
 		}
 
 		return doador;
