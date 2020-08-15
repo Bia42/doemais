@@ -47,6 +47,46 @@ public class DoadorDAO {
 
 		return lista;
 	}
+	
+	
+	public Doador listarDoador(String cpf) throws Exception {
+		Doador doador = null;
+
+		Connection conexao = BDConfig.getConnection();
+		String historico = "";
+
+		String sql = "select nome, cpf, data_nascimento, telefone, email, tipo_sanguineo,id from doador where cpf = ?";
+		String sql2 = "select data_hora, quantidade from doacoes where doador_id = ? and confirmacao = 1";
+
+		PreparedStatement statement = conexao.prepareStatement(sql);
+		statement.setString(1, cpf);
+		
+		ResultSet rs = statement.executeQuery();
+		System.getProperty("line.separator"); // Anterior ao Java 7
+		String bia = System.lineSeparator();   
+		
+		while (rs.next()) {
+			doador = new Doador();
+			doador.setId(rs.getInt("ID"));
+			doador.setEmail(rs.getString("EMAIL"));
+			doador.setNome(rs.getString("nome"));
+			doador.setTipoSanguineo(rs.getString("tipo_Sanguineo"));
+			doador.setDataNascimento(rs.getString("data_nascimento"));
+			doador.setCpf(rs.getString("cpf"));
+			doador.setTelefone(rs.getString("telefone"));
+			
+			statement = conexao.prepareStatement(sql2);
+			statement.setInt(1,rs.getInt("ID"));
+			ResultSet rs2 = statement.executeQuery();
+			while(rs2.next()) {
+				historico += "\r\n" + "Data da doação: " + rs2.getString("data_hora") + " Quantidade(L): " + rs2.getString("quantidade") ;
+			}
+			doador.setHistorico(historico);
+
+		}
+
+		return doador;
+	}
 	public boolean verificarCpfExistente(String cpf) throws Exception {
 		Connection conexao = BDConfig.getConnection();
 

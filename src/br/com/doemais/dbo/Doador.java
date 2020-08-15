@@ -18,6 +18,8 @@ public class Doador {
 	private String cep;
 	private String longitude;
 	private String latitude;
+	private String historico;
+
 	
 	public int getId() {
 		return id;
@@ -117,5 +119,12 @@ public class Doador {
 	public void setLatitude(String latitude) {
 		this.latitude = latitude;
 	}
+	public String getHistorico() {
+		return historico;
+	}
+	public void setHistorico(String historico) {
+		this.historico = historico;
+	}
+	
 	
 }

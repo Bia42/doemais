@@ -48,6 +48,22 @@ public class DoadorServices {
 		}
 		return Response.status(404).entity("Email ou senha incorretos").build();
 	}
+	@POST
+	@Path("/historico")
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	public Response historico(Doador doador) {
+		try {
+			doador = doadorDAO.listarDoador(doador.getCpf());
+			if (doador != null) {
+				return Response.status(200).entity(doador).build();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(404).entity("Email ou senha incorretos").build();
+	}
 
 	@GET
 	@Path("/list")
