@@ -87,6 +87,32 @@ public class DoadorDAO {
 
 		return doador;
 	}
+	
+	public Doador listarDoadorPorCod(String codUser) throws Exception {
+		Doador doador = null;
+
+		Connection conexao = BDConfig.getConnection();
+
+		String sql = "select nome, cpf, data_nascimento, telefone, email, tipo_sanguineo,id from doador where codUser = ?";
+
+		PreparedStatement statement = conexao.prepareStatement(sql);
+		statement.setString(1, codUser);
+		
+		ResultSet rs = statement.executeQuery();
+		
+		while (rs.next()) {
+			doador = new Doador();
+			doador.setId(rs.getInt("ID"));
+			doador.setEmail(rs.getString("EMAIL"));
+			doador.setNome(rs.getString("nome"));
+			doador.setTipoSanguineo(rs.getString("tipo_Sanguineo"));
+			doador.setDataNascimento(rs.getString("data_nascimento"));
+			doador.setCpf(rs.getString("cpf"));
+			doador.setTelefone(rs.getString("telefone"));
+		}
+
+		return doador;
+	}
 	public boolean verificarCpfExistente(String cpf) throws Exception {
 		Connection conexao = BDConfig.getConnection();
 
