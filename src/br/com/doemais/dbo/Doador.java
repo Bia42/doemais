@@ -1,5 +1,9 @@
 package br.com.doemais.dbo;
 
+import java.util.Random;
+
+import org.apache.commons.lang3.RandomStringUtils;
+
 public class Doador {
 	
 	private int id;
@@ -19,7 +23,7 @@ public class Doador {
 	private String longitude;
 	private String latitude;
 	private String historico;
-
+	private String codUser;
 	
 	public int getId() {
 		return id;
@@ -125,6 +129,23 @@ public class Doador {
 	public void setHistorico(String historico) {
 		this.historico = historico;
 	}
+
+	public String getCodUser() {
+		return codUser;
+	}
+	public void setCodUser(String codUser) {
+		this.codUser = codUser;
+	}
+	public String geradorCodUser() {
+		
+	    Random r = new Random();
+
+	    String codUser = RandomStringUtils.randomAlphabetic(8);
+	    codUser = codUser + r.nextInt(10);
+	    
+	    return codUser;
+	}
+	
 	
 	
 }

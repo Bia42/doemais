@@ -181,6 +181,8 @@ public class DoadorDAO {
 			doador.setComplemento(rs.getString("complemento"));
 			doador.setLongitude(rs.getString("longitude"));
 			doador.setLatitude(rs.getString("latitude"));
+			doador.setCodUser(rs.getString("codUser"));
+
 			stmtLog = conexao.prepareStatement("exec log_add ?,null,'LOGIN','doador','APP_LOGIN'");
 			stmtLog.setInt(1, rs.getInt("ID"));
 			stmtLog.execute();
@@ -194,7 +196,7 @@ public class DoadorDAO {
 		Connection conexao = BDConfig.getConnection();
 
 		String sql = "INSERT INTO Doador(nome, email, senha, data_nascimento, cpf, telefone, tipo_sanguineo,endereco, cidade,estado, numero,"
-				+ " cep, complemento, longitude, latitude) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,? , ? ,?)";
+				+ " cep, complemento, longitude, latitude, codUser) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,? , ? ,?, ?)";
 		PreparedStatement statement = conexao.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
 		statement.setString(1, doador.getNome());
 		statement.setString(2, doador.getEmail());
@@ -211,6 +213,7 @@ public class DoadorDAO {
 		statement.setString(13, doador.getComplemento());
 		statement.setString(14, doador.getLongitude());
 		statement.setString(15, doador.getLatitude());		
+		statement.setString(16, doador.geradorCodUser());		
 
 		statement.execute();
 		
