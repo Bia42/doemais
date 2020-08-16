@@ -21,7 +21,7 @@ public class DoadorServices {
 	private static final String CHARSET_UTF8 = ";charset=utf-8";
 
 	private DoadorDAO doadorDAO;
-
+ //bia
 	@PostConstruct
 	private void init() {
 		doadorDAO = new DoadorDAO();
