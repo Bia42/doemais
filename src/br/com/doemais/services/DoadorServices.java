@@ -53,10 +53,11 @@ public class DoadorServices {
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
 	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
 	public Doador historico(Doador doador) {
+		Doador retorno = null;
 		try {
-			doador = doadorDAO.listarDoador(doador.getCpf());
-			if (doador != null) {
-				return doador;
+			retorno = doadorDAO.listarDoador(doador.getCpf());
+			if (retorno != null) {
+				return retorno;
 			}
 			
 		} catch (Exception e) {
