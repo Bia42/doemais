@@ -19,7 +19,7 @@ import br.com.doemais.dbo.UsuariosHemocentro;
 @Path("/hemocentro")
 public class HemocentroServices {
 
-	private static final String CHARSET_UTF8 = ";charset=utf-8";
+	private static final String CHARSET_UTF8 = ";charset=iso-8859-1";
 
 	private HemocentroDAO hemocentroDAO;
 
