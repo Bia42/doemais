@@ -61,10 +61,7 @@ public class DoadorDAO {
 		PreparedStatement statement = conexao.prepareStatement(sql);
 		statement.setString(1, cpf);
 		
-		ResultSet rs = statement.executeQuery();
-		System.getProperty("line.separator"); // Anterior ao Java 7
-		String bia = System.lineSeparator();   
-		
+		ResultSet rs = statement.executeQuery();		
 		while (rs.next()) {
 			doador = new Doador();
 			doador.setId(rs.getInt("ID"));

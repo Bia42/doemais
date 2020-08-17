@@ -21,7 +21,7 @@ public class DoadorServices {
 	private static final String CHARSET_UTF8 = ";charset=utf-8";
 
 	private DoadorDAO doadorDAO;
- //bia
+
 	@PostConstruct
 	private void init() {
 		doadorDAO = new DoadorDAO();
@@ -50,8 +50,8 @@ public class DoadorServices {
 	}
 	@POST
 	@Path("/historico")
-	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
 	public Doador historico(Doador doador) {
 		Doador retorno = null;
 		try {
