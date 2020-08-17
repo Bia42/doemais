@@ -51,18 +51,18 @@ public class DoadorServices {
 	@POST
 	@Path("/historico")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	@Produces("application/json; charset=iso-8859-1")
-	public Response historico(Doador doador) {
+	@Produces("application/json; charset=UTF-8")
+	public Doador historico(Doador doador) {
 		try {
 			doador = doadorDAO.listarDoador(doador.getCpf());
 			if (doador != null) {
-				return Response.status(200).entity(doador).build();
+				return doador;
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return Response.status(404).entity("Email ou senha incorretos").build();
+		return null;
 	}
 	@POST
 	@Path("/listUser")
