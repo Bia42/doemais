@@ -18,7 +18,7 @@ import br.com.doemais.dbo.Patrocinador;
 @Path("/patrocinador")
 public class PatrocinadorServices {
 
-	private static final String CHARSET_UTF8 = ";charset=iso-8859-1";
+	private static final String CHARSET = ";charset=iso-8859-1";
 
 	private PatrocinadorDAO patrocinadorDAO;
 
@@ -29,8 +29,8 @@ public class PatrocinadorServices {
 
 	@POST
 	@Path("/login")
-	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET)
+	@Produces(MediaType.APPLICATION_JSON + CHARSET)
 	public Response login(Patrocinador pat) {
 		Patrocinador patLogado = null;
 		try {
@@ -52,7 +52,7 @@ public class PatrocinadorServices {
 
 	@GET
 	@Path("/listPatrocinadores")
-	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	@Produces(MediaType.APPLICATION_JSON + CHARSET)
 	public List<Patrocinador> listarUsers() {
 		List<Patrocinador> lista = null;
 		try {
@@ -65,7 +65,7 @@ public class PatrocinadorServices {
 	
 	@GET
 	@Path("/listCuponsAtivos")
-	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	@Produces(MediaType.APPLICATION_JSON + CHARSET)
 	public List<Cupom> listarCuponsAtivos() {
 		List<Cupom> lista = null;
 		try {
@@ -78,8 +78,8 @@ public class PatrocinadorServices {
 	
 	@POST
 	@Path("/cupomAutoGerado")
-	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET)
+	@Produces(MediaType.APPLICATION_JSON + CHARSET)
 	public Cupom listarCupomAutoGerado(Cupom cup) {
 		Cupom cupom = null;
 		try {
@@ -91,8 +91,8 @@ public class PatrocinadorServices {
 	}
 	@POST
 	@Path("/listCuponsAtivosPorPatrocinador")
-	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET)
+	@Produces(MediaType.APPLICATION_JSON + CHARSET)
 	public List<Cupom> listarCuponsAtivosPorPatrocinador(Cupom cupom) {
 		List<Cupom> lista = null;
 		try {
@@ -105,8 +105,8 @@ public class PatrocinadorServices {
 	
 	@POST
 	@Path("/listCuponsResgatadosPorPatrocinador")
-	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET)
+	@Produces(MediaType.APPLICATION_JSON + CHARSET)
 	public List<Cupom> listarCuponsResgatadosPorPatrocinador(Cupom cupom) {
 		List<Cupom> lista = null;
 		try {
@@ -119,8 +119,8 @@ public class PatrocinadorServices {
 	
 	@POST
 	@Path("/gerarCupons")
-	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET)
+	@Produces(MediaType.APPLICATION_JSON + CHARSET)
 	public List<String> gerarCupons(Cupom cupom) {
 		List<String> lista = null;
 		try {
@@ -133,7 +133,7 @@ public class PatrocinadorServices {
 	
 	@POST
 	@Path("/vinculoCupom")
-	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET)
 	public Response addDoador(Cupom cupom) {
 		String msg = "";
 
@@ -152,7 +152,7 @@ public class PatrocinadorServices {
 	
 	@POST
 	@Path("/cupomPorDoador")
-	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET)
 	public List<Cupom> cupomDoador(Cupom cupom) {
 		List<Cupom> lista = null;
 		try {
@@ -166,7 +166,7 @@ public class PatrocinadorServices {
 
 	@POST
 	@Path("/add")
-	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET)
 	public Response adduserPatrocinador(Patrocinador pat) {
 		String msg = "";
 		try {
@@ -194,7 +194,7 @@ public class PatrocinadorServices {
 	 * 
 	 * @Consumes(MediaType.TEXT_PLAIN)
 	 * 
-	 * @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8) public Usuario
+	 * @Produces(MediaType.APPLICATION_JSON + CHARSET) public Usuario
 	 * buscarPorId(@PathParam("id") int id) { Usuario usuario = null; try { usuario
 	 * = usuarioDAO.buscarUsuarioPorId(id); } catch (Exception e) {
 	 * e.printStackTrace(); } return usuario; //Teste }
@@ -208,7 +208,7 @@ public class PatrocinadorServices {
 	 * 
 	 * @Consumes(MediaType.TEXT_PLAIN)
 	 * 
-	 * @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8) public Nota
+	 * @Produces(MediaType.APPLICATION_JSON + CHARSET) public Nota
 	 * buscarPorId(@PathParam("id") int idNota) { Nota nota = null; try { nota =
 	 * usuarioDAO.buscarNotaPorId(idNota); } catch (Exception e) {
 	 * e.printStackTrace(); }
@@ -219,7 +219,7 @@ public class PatrocinadorServices {
 	 * 
 	 * @Path("/edit/{id}")
 	 * 
-	 * @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	 * @Consumes(MediaType.APPLICATION_JSON + CHARSET)
 	 * 
 	 * @Produces(MediaType.TEXT_PLAIN) public String editarNota(Nota
 	 * nota, @PathParam("id") int idNota) { String msg = "";
