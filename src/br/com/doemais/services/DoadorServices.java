@@ -18,7 +18,7 @@ import br.com.doemais.dbo.Doador;
 @Path("/doador")
 public class DoadorServices {
 
-	private static final String CHARSET_UTF8 = "; charset=ISO-8859-1";
+	private static final String CHARSET_UTF8 = ";charset=ISO-8859-1";
 
 	private DoadorDAO doadorDAO;
 
