@@ -76,7 +76,18 @@ public class HemocentroServices {
 		}
 		return lista;
 	}
-
+	@GET
+	@Path("/listHemocentrosPorNivel")
+	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	public List<Hemocentro> listarHemocentrosPorNivel() {
+		List<Hemocentro> lista = null;
+		try {
+			lista = hemocentroDAO.listarHemocentrosPorNivel();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
 	@POST
 	@Path("/add")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)

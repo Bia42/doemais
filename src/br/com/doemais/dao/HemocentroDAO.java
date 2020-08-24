@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import br.com.doemais.config.BDConfig;
 import br.com.doemais.dbo.Hemocentro;
@@ -77,6 +79,51 @@ public class HemocentroDAO {
 
 		return lista;
 	}
+	public List<Hemocentro> listarHemocentrosPorNivel() throws Exception {
+		List<Hemocentro> lista = new ArrayList<>();
+
+		Connection conexao = BDConfig.getConnection();
+
+		String sql = "select * from Hemocentro";
+		String sql2 = "select * from NiveisSangue where hemocentro_id = ?";
+
+
+		PreparedStatement statement = conexao.prepareStatement(sql);
+		ResultSet rs = statement.executeQuery();
+		
+
+
+
+		while (rs.next()) {
+			Hemocentro hemo = new Hemocentro();
+			hemo.setHemocentroId(rs.getInt("ID"));
+			hemo.setRazaoSocial(rs.getString("razao_social"));
+			hemo.setCnpj(rs.getString("cnpj"));
+			hemo.setEndereco(rs.getString("endereco"));
+			hemo.setCidade(rs.getString("cidade"));
+			hemo.setEstado(rs.getString("estado"));
+			hemo.setNumero(rs.getString("numero"));
+			hemo.setCep(rs.getString("cep"));
+			hemo.setComplemento(rs.getString("complemento"));
+			hemo.setLongitude(rs.getString("longitude"));
+			hemo.setLatitude(rs.getString("latitude"));
+			
+			PreparedStatement statement2 = conexao.prepareStatement(sql2);
+			statement2.setInt(1, rs.getInt("ID"));
+			ResultSet rs2 = statement2.executeQuery();
+			
+			Map<String,Double> niveis = new HashMap<String,Double>();
+
+			while(rs2.next()) {
+				niveis.put(rs2.getString("tipoSangue"), rs2.getDouble("nivel"));
+			}
+			hemo.setNiveisSangue(niveis);
+			
+			lista.add(hemo);
+		}
+
+		return lista;
+	}
 	
 	public Hemocentro listarHemocentro(int hemocentroId) throws Exception {
 		Hemocentro hemo = null;
@@ -107,6 +154,7 @@ public class HemocentroDAO {
 
 		return hemo;
 	}
+	
 	
 	public UsuariosHemocentro realizarLogin(String email, String senha) throws Exception {
 		UsuariosHemocentro userHemo = null;

@@ -1,5 +1,7 @@
 package br.com.doemais.dbo;
 
+import java.util.Map;
+
 public class Hemocentro {
 	
 	private Integer hemocentroId;
@@ -16,7 +18,14 @@ public class Hemocentro {
 	private String longitude;
 	private String latitude;
 	private String horarios;
+	private Map<String,Double> niveisSangue;
 
+	public Map<String, Double> getNiveisSangue() {
+		return niveisSangue;
+	}
+	public void setNiveisSangue(Map<String, Double> niveisSangue) {
+		this.niveisSangue = niveisSangue;
+	}
 	public Integer getHemocentroId() {
 		return hemocentroId;
 	}
