@@ -80,6 +80,7 @@ public class HemocentroDAO {
 
 		return lista;
 	}
+
 	public List<Hemocentro> listarHemocentrosPorNivel() throws Exception {
 		List<Hemocentro> lista = new ArrayList<>();
 

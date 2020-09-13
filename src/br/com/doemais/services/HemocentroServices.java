@@ -50,6 +50,22 @@ public class HemocentroServices {
 		}
 		return Response.status(404).entity("Email ou senha incorretos").build();
 	}
+	
+	@POST
+	@Path("/listHemocentro")
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	public Hemocentro login(Hemocentro hemocentro) {
+		try {
+			hemocentro = hemocentroDAO.listarHemocentro(hemocentro.getHemocentroId());
+			if (hemocentro != null) {
+				return hemocentro;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return hemocentro;
+	}
 	@POST
 	@Path("/agenda")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
@@ -66,7 +82,6 @@ public class HemocentroServices {
 		}
 		return horarios;
 	}
-
 	@GET
 	@Path("/listUser")
 	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)

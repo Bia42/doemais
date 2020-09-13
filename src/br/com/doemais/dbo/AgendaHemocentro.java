@@ -6,7 +6,6 @@ public class AgendaHemocentro {
 	private String horarioDoacao;
 	private int qdtVagas;
 	private int qdtOcupados;
-	private int horarioCheio;
 	public Integer getHemocentroId() {
 		return hemocentroId;
 	}
@@ -37,12 +36,5 @@ public class AgendaHemocentro {
 	public void setQdtOcupados(int qdtOcupados) {
 		this.qdtOcupados = qdtOcupados;
 	}
-	public int getHorarioCheio() {
-		return horarioCheio;
-	}
-	public void setHorarioCheio(int horarioCheio) {
-		this.horarioCheio = horarioCheio;
-	}
 	
-
 }
