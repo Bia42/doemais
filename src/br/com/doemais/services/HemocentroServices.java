@@ -12,7 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import br.com.doemais.dao.HemocentroDAO;
-import br.com.doemais.dbo.Doacoes;
+import br.com.doemais.dbo.AgendaHemocentro;
 import br.com.doemais.dbo.Hemocentro;
 import br.com.doemais.dbo.UsuariosHemocentro;
 
@@ -49,6 +49,22 @@ public class HemocentroServices {
 			e.printStackTrace();
 		}
 		return Response.status(404).entity("Email ou senha incorretos").build();
+	}
+	@POST
+	@Path("/agenda")
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	public List<AgendaHemocentro> login(AgendaHemocentro agenda) {
+		List<AgendaHemocentro>  horarios = null;
+		try {
+			horarios = hemocentroDAO.getAgendaHemocentro(agenda.getHemocentroId());
+			if (horarios != null) {
+				return horarios;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return horarios;
 	}
 
 	@GET

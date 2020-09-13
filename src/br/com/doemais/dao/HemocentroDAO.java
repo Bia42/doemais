@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import br.com.doemais.config.BDConfig;
+import br.com.doemais.dbo.AgendaHemocentro;
 import br.com.doemais.dbo.Hemocentro;
 import br.com.doemais.dbo.UsuariosHemocentro;
 
@@ -154,7 +155,33 @@ public class HemocentroDAO {
 
 		return hemo;
 	}
+
+	public List<AgendaHemocentro> getAgendaHemocentro(int hemocentroId) throws Exception {
+		List<AgendaHemocentro>  horarios = new ArrayList<>();
+		AgendaHemocentro horario = null;
+
+		Connection conexao = BDConfig.getConnection();
+
+		String sql = "select * from agenda_hemocentro  where hemocentro_id = ? and horario_cheio = 0";
 	
+
+		PreparedStatement statement = conexao.prepareStatement(sql);
+		statement.setInt(1, hemocentroId);
+
+		ResultSet rs = statement.executeQuery();
+
+		while (rs.next()) {
+			horario = new AgendaHemocentro();
+			horario.setHemocentroId(rs.getInt("hemocentro_id"));
+			horario.setAgendaId(rs.getInt("id"));
+			horario.setHorario_doacao(rs.getString("horario_doacao"));
+			horario.setQdtOcupados(rs.getInt("qtd_ocupados"));
+			horario.setQdtVagas(rs.getInt("qtd_vagas"));
+			horarios.add(horario);	
+		}
+
+		return horarios;
+	}
 	
 	public UsuariosHemocentro realizarLogin(String email, String senha) throws Exception {
 		UsuariosHemocentro userHemo = null;
