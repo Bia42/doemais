@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 
 import br.com.doemais.dao.HemocentroDAO;
 import br.com.doemais.dbo.AgendaHemocentro;
+import br.com.doemais.dbo.AtendimentoHemocentro;
 import br.com.doemais.dbo.Hemocentro;
 import br.com.doemais.dbo.UsuariosHemocentro;
 
@@ -50,7 +51,7 @@ public class HemocentroServices {
 		}
 		return Response.status(404).entity("Email ou senha incorretos").build();
 	}
-	
+
 	@POST
 	@Path("/listHemocentro")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
@@ -66,12 +67,13 @@ public class HemocentroServices {
 		}
 		return hemocentro;
 	}
+
 	@POST
 	@Path("/agenda")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
 	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
 	public List<AgendaHemocentro> login(AgendaHemocentro agenda) {
-		List<AgendaHemocentro>  horarios = null;
+		List<AgendaHemocentro> horarios = null;
 		try {
 			horarios = hemocentroDAO.getAgendaHemocentro(agenda.getHemocentroId());
 			if (horarios != null) {
@@ -82,6 +84,7 @@ public class HemocentroServices {
 		}
 		return horarios;
 	}
+
 	@GET
 	@Path("/listUser")
 	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
@@ -107,6 +110,7 @@ public class HemocentroServices {
 		}
 		return lista;
 	}
+
 	@GET
 	@Path("/listHemocentrosPorNivel")
 	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
@@ -119,6 +123,7 @@ public class HemocentroServices {
 		}
 		return lista;
 	}
+
 	@POST
 	@Path("/add")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
@@ -142,7 +147,26 @@ public class HemocentroServices {
 
 		return Response.status(404).entity(msg).build();
 	}
-	
+
+	@POST
+	@Path("/addAgenda")
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	public Response addAgenda(AtendimentoHemocentro agenda) {
+		String msg = "";
+
+		try {
+
+			int idGerado = hemocentroDAO.addAgenda(agenda);
+			msg = String.valueOf(idGerado);
+			return Response.status(201).entity("Agenda gerada com sucesso!").build();
+
+		} catch (Exception e) {
+			msg = "Erro ao adicionar o usuário, entre em contato com o administrador!" + e.getMessage();
+		}
+
+		return Response.status(404).entity(msg).build();
+	}
+
 	@POST
 	@Path("/atualizaDados")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
@@ -160,7 +184,6 @@ public class HemocentroServices {
 
 		return Response.status(404).entity(msg).build();
 	}
-
 
 	/*
 	 * @GET

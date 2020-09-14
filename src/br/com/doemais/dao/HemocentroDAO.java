@@ -11,6 +11,7 @@ import java.util.Map;
 
 import br.com.doemais.config.BDConfig;
 import br.com.doemais.dbo.AgendaHemocentro;
+import br.com.doemais.dbo.AtendimentoHemocentro;
 import br.com.doemais.dbo.Hemocentro;
 import br.com.doemais.dbo.UsuariosHemocentro;
 
@@ -283,6 +284,50 @@ public class HemocentroDAO {
 		ResultSet rs = statement.getGeneratedKeys();
 		if (rs.next()) {
 			idGerado = rs.getInt(1);
+		}
+		
+		return idGerado;
+	}
+	public int addAgenda(AtendimentoHemocentro atendimento) throws Exception {
+		int idGerado = 0;
+		Connection conexao = BDConfig.getConnection();
+		String procedure = "EXEC p_agendamento";
+		String sql = "insert into atendimento_hemocentro("
+				+ "hemocentro_id,"
+				+ "dia_inicio,"
+				+ "dia_final,"
+				+ "hora_final,"
+				+ "hora_inicio,"
+				+ "minuto_final,"
+				+ "minuto_inicio,"
+				+ "periodo_final,"
+				+ "periodo_inicio,"
+				+ "quantidade,"
+				+ "tempo,"
+				+ "flag_agenda)"
+				+ " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+		PreparedStatement statement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+		statement.setInt(1, atendimento.getHemocentroId());
+		statement.setInt(2, atendimento.getDia());
+		statement.setInt(3, atendimento.getDiaFinal());
+		statement.setInt(4, Integer.parseInt(atendimento.getHoraInicio().substring(0,atendimento.getHoraInicio().indexOf(':'))));
+		statement.setInt(5, Integer.parseInt(atendimento.getHoraFinal().substring(0,atendimento.getHoraFinal().indexOf(':'))));
+		statement.setInt(6,  Integer.parseInt(atendimento.getHoraInicio().substring(atendimento.getHoraInicio().indexOf(':')+1)));
+		statement.setInt(7,  Integer.parseInt(atendimento.getHoraFinal().substring(atendimento.getHoraFinal().indexOf(':')+1)));
+		statement.setString(8,  atendimento.getPeriodoFinal());
+		statement.setString(9,  atendimento.getPeriodoInicio());
+		statement.setInt(10,  atendimento.getQuantidade());
+		statement.setInt(11,  atendimento.getTempo());
+		statement.setString(12, "N");
+		statement.execute();
+		
+		ResultSet rs = statement.getGeneratedKeys();
+		if (rs.next()) {
+			idGerado = rs.getInt(1);
+			PreparedStatement statement2 = conexao.prepareStatement(procedure, Statement.RETURN_GENERATED_KEYS);
+
+			statement2.executeUpdate();
 		}
 		
 		return idGerado;
