@@ -50,8 +50,8 @@ public class DoadorServices {
 	}
 	@POST
 	@Path("/historico")
-	@Consumes("application/json ; charset=UTF-8")
-	@Produces("application/json ; charset=UTF-8")
+	@Consumes("application/json;iso-8859-1")
+	@Produces("application/json;iso-8859-1")
 	public Response historico(Doador doador) {
 		Doador retorno = null;
 		try {
