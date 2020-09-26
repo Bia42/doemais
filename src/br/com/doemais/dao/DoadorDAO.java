@@ -82,7 +82,7 @@ public class DoadorDAO {
 			String germanString = historico;
 			byte[] germanBytes = germanString.getBytes();
 			 
-			String asciiEncodedString = new String(germanBytes, StandardCharsets.UTF_8);
+			String asciiEncodedString = new String(germanBytes, StandardCharsets.ISO_8859_1);
 			
 			doador.setHistorico(asciiEncodedString);
 
