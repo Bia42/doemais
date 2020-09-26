@@ -12,13 +12,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import br.com.doemais.dao.PatrocinadorDAO;
+import br.com.doemais.dbo.Campanhas;
 import br.com.doemais.dbo.Cupom;
 import br.com.doemais.dbo.Patrocinador;
 
 @Path("/patrocinador")
 public class PatrocinadorServices {
 
-	private static final String CHARSET = ";charset=iso-8859-1";
+	private static final String CHARSET = ";charset=utf-8";
 
 	private PatrocinadorDAO patrocinadorDAO;
 
@@ -62,7 +63,7 @@ public class PatrocinadorServices {
 		}
 		return lista;
 	}
-	
+
 	@GET
 	@Path("/listCuponsAtivos")
 	@Produces(MediaType.APPLICATION_JSON + CHARSET)
@@ -75,7 +76,7 @@ public class PatrocinadorServices {
 		}
 		return lista;
 	}
-	
+
 	@POST
 	@Path("/cupomAutoGerado")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET)
@@ -89,6 +90,7 @@ public class PatrocinadorServices {
 		}
 		return cupom;
 	}
+
 	@POST
 	@Path("/listCuponsAtivosPorPatrocinador")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET)
@@ -102,7 +104,7 @@ public class PatrocinadorServices {
 		}
 		return lista;
 	}
-	
+
 	@POST
 	@Path("/listCuponsResgatadosPorPatrocinador")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET)
@@ -116,7 +118,7 @@ public class PatrocinadorServices {
 		}
 		return lista;
 	}
-	
+
 	@POST
 	@Path("/gerarCupons")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET)
@@ -130,7 +132,29 @@ public class PatrocinadorServices {
 		}
 		return lista;
 	}
-	
+
+	@POST
+	@Path("/cadastrarCampanhas")
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET)
+	public Response gerarCupons(Campanhas campanha) {
+		String msg = "";
+		try {
+			boolean retorno = patrocinadorDAO.cadastrarCampanha(campanha.getDescricao(), campanha.getPatrocinadorId(),
+					campanha.getQuantCupons());
+			if (retorno) {
+				return Response.status(200).build();
+
+			} else {
+				msg = "Erro ao cadastrar campanhas, contate o administrador do sistema";
+			}
+
+		} catch (Exception e) {
+			msg = "Erro ao cadastrar campanhas, contate o administrador do sistema";
+			e.printStackTrace();
+		}
+		return Response.status(404).entity(msg).build();
+	}
+
 	@POST
 	@Path("/vinculoCupom")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET)
@@ -148,8 +172,7 @@ public class PatrocinadorServices {
 
 		return Response.status(404).entity(msg).build();
 	}
-	
-	
+
 	@POST
 	@Path("/cupomPorDoador")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET)
@@ -163,22 +186,21 @@ public class PatrocinadorServices {
 		return lista;
 	}
 
-
 	@POST
 	@Path("/add")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET)
 	public Response adduserPatrocinador(Patrocinador pat) {
 		String msg = "";
 		try {
-			//if (patrocinadorDAO.verificarUserExistente(pat.getEmail())) {
-			//	return Response.status(404).entity("Email existente!").build();
-			//} else if (patrocinadorDAO.verificarCnpjExistente(pat.getCnpj())) {
-			//	return Response.status(404).entity("CNPJ já utilizado").build();
-			//} else {
-				int idGerado = patrocinadorDAO.addPatrocinador(pat);
-				msg = String.valueOf(idGerado);
-				return Response.status(201).entity("Usuário Cadastrado Com Sucesso").build();
-			//}
+			// if (patrocinadorDAO.verificarUserExistente(pat.getEmail())) {
+			// return Response.status(404).entity("Email existente!").build();
+			// } else if (patrocinadorDAO.verificarCnpjExistente(pat.getCnpj())) {
+			// return Response.status(404).entity("CNPJ já utilizado").build();
+			// } else {
+			int idGerado = patrocinadorDAO.addPatrocinador(pat);
+			msg = String.valueOf(idGerado);
+			return Response.status(201).entity("Usuário Cadastrado Com Sucesso").build();
+			// }
 
 		} catch (Exception e) {
 			msg = "Erro ao add o usuário, entre em contato com o administrador!" + e.getMessage();

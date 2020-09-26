@@ -292,6 +292,55 @@ public class PatrocinadorDAO {
 		return cuponsGerados;
 	}
 	
+	public boolean geraCuponsCampanhas(int campanhaId, int quantidade, int patrocinadorId, String descricao) throws Exception {
+
+		boolean retorno = false;
+		Connection conexao = BDConfig.getConnection();
+		
+		Cupom cupom = new Cupom();
+		
+		String cupomGerado = "";
+		
+		for(int i = 0; i < quantidade; i ++) {
+			
+			cupomGerado = cupom.geradorDeCupom(patrocinadorId);
+			String sql = "insert into cupom(cupom, patrocinador_id, descricao, campanha_id) values(?,?,?,?)";
+			
+			PreparedStatement statement = conexao.prepareStatement(sql);
+			statement.setString(1, cupomGerado);
+			statement.setInt(2, patrocinadorId);
+			statement.setString(3, descricao);
+			statement.setInt(4, campanhaId);
+
+			statement.execute();
+			
+		}
+		retorno = true;
+		
+		return retorno;
+	}
+	
+	public boolean cadastrarCampanha(String descricao, int patrocinadorId, int quantidade) throws Exception {
+
+		boolean retorno = false;
+		Connection conexao = BDConfig.getConnection();
+		
+		String sql = "insert into campanhas(descricao, patrocinador_id) values(?,?)";
+			
+		PreparedStatement statement = conexao.prepareStatement(sql,  Statement.RETURN_GENERATED_KEYS);
+		statement.setString(1, descricao);
+		statement.setInt(2, patrocinadorId);
+		statement.execute();
+			
+		ResultSet rs = statement.getGeneratedKeys();
+		if (rs.next()) {
+			int campanhaId = rs.getInt(1);
+			this.geraCuponsCampanhas(campanhaId, quantidade, patrocinadorId, descricao);
+			retorno = true;
+		}
+		
+		return retorno;
+	}
 	public boolean vinculoCupom(int cupomId, int usuarioId) throws Exception {
 		Connection conexao = BDConfig.getConnection();
 
