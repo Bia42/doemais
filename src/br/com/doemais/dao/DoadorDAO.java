@@ -77,9 +77,8 @@ public class DoadorDAO {
 			statement.setInt(1,rs.getInt("ID"));
 			ResultSet rs2 = statement.executeQuery();
 			while(rs2.next()) {
-				historico.concat("Data da doação: " + rs2.getString("data_hora") + " Quantidade(L): " + rs2.getString("quantidade") + '\n');
+				historico +=  "Data da doação: " + rs2.getString("data_hora") + " Quantidade(L): " + rs2.getString("quantidade") + '\n';
 			}
-
 			
 			doador.setHistorico(historico);
 

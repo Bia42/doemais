@@ -52,12 +52,12 @@ public class DoadorServices {
 	@Path("/historico")
 	@Consumes("application/json ; charset=UTF-8")
 	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	public Response historico(Doador doador) {
+	public Doador historico(Doador doador) {
 		Doador retorno = null;
 		try {
 			retorno = doadorDAO.listarDoador(doador.getCpf());
 			if (retorno != null) {
-				return Response.status(200).entity(retorno).build();	
+				return retorno;	
 				}
 			
 		} catch (Exception e) {
