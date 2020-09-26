@@ -79,12 +79,9 @@ public class DoadorDAO {
 			while(rs2.next()) {
 				historico +=  "Data da doação: " + rs2.getString("data_hora") + " Quantidade(L): " + rs2.getString("quantidade") + '\n';
 			}
-			String germanString = historico;
-			byte[] germanBytes = germanString.getBytes();
-			 
-			String asciiEncodedString = new String(germanBytes, StandardCharsets.ISO_8859_1);
+
 			
-			doador.setHistorico(asciiEncodedString);
+			doador.setHistorico(historico);
 
 		}
 
