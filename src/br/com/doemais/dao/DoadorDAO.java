@@ -1,5 +1,6 @@
 package br.com.doemais.dao;
 
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -78,7 +79,12 @@ public class DoadorDAO {
 			while(rs2.next()) {
 				historico +=  "Data da doação: " + rs2.getString("data_hora") + " Quantidade(L): " + rs2.getString("quantidade") + '\n';
 			}
-			doador.setHistorico(historico);
+			String germanString = historico;
+			byte[] germanBytes = germanString.getBytes();
+			 
+			String asciiEncodedString = new String(germanBytes, StandardCharsets.UTF_8);
+			
+			doador.setHistorico(asciiEncodedString);
 
 		}
 
