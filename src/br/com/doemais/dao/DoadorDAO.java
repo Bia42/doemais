@@ -56,7 +56,7 @@ public class DoadorDAO {
 		Connection conexao = BDConfig.getConnection();
 		String historico = "";
 
-		String sql = "select nome, cpf, data_nascimento, telefone, email, tipo_sanguineo,id from doador where cpf = ?";
+		String sql = "select nome, cpf, data_nascimento, telefone, email, tipo_sanguineo,id, dbo.historico(id) historico from doador where cpf = ?";
 		String sql2 = "select data_hora, quantidade from doacoes where doador_id = ? and confirmacao = 1";
 
 		PreparedStatement statement = conexao.prepareStatement(sql);
@@ -73,14 +73,14 @@ public class DoadorDAO {
 			doador.setCpf(rs.getString("cpf"));
 			doador.setTelefone(rs.getString("telefone"));
 			
-			statement = conexao.prepareStatement(sql2);
-			statement.setInt(1,rs.getInt("ID"));
-			ResultSet rs2 = statement.executeQuery();
-			while(rs2.next()) {
-				historico +=  "Data da doação: " + rs2.getString("data_hora") + " Quantidade(L): " + rs2.getString("quantidade") + '\n';
-			}
-			
-			doador.setHistorico(historico);
+//			statement = conexao.prepareStatement(sql2);
+//			statement.setInt(1,rs.getInt("ID"));
+//			ResultSet rs2 = statement.executeQuery();
+//			while(rs2.next()) {
+//				historico +=  "Data da doação: " + rs2.getString("data_hora") + " Quantidade(L): " + rs2.getString("quantidade") + '\n';
+//			}
+//			
+			doador.setHistorico(rs.getString("historico"));
 
 		}
 
