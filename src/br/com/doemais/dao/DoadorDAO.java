@@ -1,6 +1,5 @@
 package br.com.doemais.dao;
 
-import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.doemais.config.BDConfig;
+import br.com.doemais.dbo.Agendados;
 import br.com.doemais.dbo.Doacoes;
 import br.com.doemais.dbo.Doador;
 
@@ -239,6 +239,25 @@ public class DoadorDAO {
 		statement.setString(14, doador.getLongitude());
 		statement.setString(15, doador.getLatitude());		
 		statement.setString(16, doador.geradorCodUser());		
+
+		statement.execute();
+		
+		ResultSet rs = statement.getGeneratedKeys();
+		if (rs.next()) {
+			idGerado = rs.getInt(1);
+		}
+		
+		return idGerado;
+	}
+	
+	public int addAgenda(Agendados agenda) throws Exception {
+		int idGerado = 0;
+		Connection conexao = BDConfig.getConnection();
+
+		String sql = "INSERT INTO agendados(agenda_id,doador_id) VALUES(?, ?)";
+		PreparedStatement statement = conexao.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+		statement.setInt(1, agenda.getAgendaId());
+		statement.setInt(2, agenda.getDoadorId());	
 
 		statement.execute();
 		

@@ -11,7 +11,9 @@ import java.util.Map;
 
 import br.com.doemais.config.BDConfig;
 import br.com.doemais.dbo.AgendaHemocentro;
+import br.com.doemais.dbo.Agendados;
 import br.com.doemais.dbo.AtendimentoHemocentro;
+import br.com.doemais.dbo.Doacoes;
 import br.com.doemais.dbo.Hemocentro;
 import br.com.doemais.dbo.UsuariosHemocentro;
 
@@ -348,6 +350,36 @@ public class HemocentroDAO {
 			return true;
 		}
 		return false;
+	}
+	public List<Agendados> listarAgendas(int hemocentroId) throws Exception {
+		List<Agendados> agendados = new ArrayList<>();
+
+		Connection conexao = BDConfig.getConnection();
+
+		String sql = "select "
+				+ "	c.nome, c.cpf, b.horario_doacao, c.id doadorId, b.id agendaId"
+				+ "	from "
+				+ "	agendados a" + 
+				"	inner join agenda_hemocentro b on a.agenda_id = b.id"
+				+ "	inner join doador c on a.doador_id = c.id"
+				+ " where b.hemocentro_id = ?";
+
+		PreparedStatement statement = conexao.prepareStatement(sql);
+		statement.setInt(1, hemocentroId);
+
+		ResultSet rs = statement.executeQuery();
+
+		while (rs.next()) {
+			Agendados agendado = new Agendados();
+			agendado.setNomeDoador(rs.getString("nome"));
+			agendado.setCpfDoador(rs.getString("cpf"));
+			agendado.setHorarioDoacao(rs.getString("horario_doacao"));
+			agendado.setAgendaId(rs.getInt("agendaId"));
+			agendado.setDoadorId(rs.getInt("doadorId"));
+			agendados.add(agendado);
+		}
+
+		return agendados;
 	}
 	
 	

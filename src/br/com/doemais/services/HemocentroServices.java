@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 
 import br.com.doemais.dao.HemocentroDAO;
 import br.com.doemais.dbo.AgendaHemocentro;
+import br.com.doemais.dbo.Agendados;
 import br.com.doemais.dbo.AtendimentoHemocentro;
 import br.com.doemais.dbo.Hemocentro;
 import br.com.doemais.dbo.UsuariosHemocentro;
@@ -66,6 +67,22 @@ public class HemocentroServices {
 			e.printStackTrace();
 		}
 		return hemocentro;
+	}
+	@POST
+	@Path("/listAgendados")
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	public List<Agendados> listAgendados(Hemocentro hemocentro) {
+		 List<Agendados> retorno = null;
+		try {
+			retorno = hemocentroDAO.listarAgendas(hemocentro.getHemocentroId());
+			if (retorno != null) {
+				return retorno;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return retorno;
 	}
 
 	@POST

@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import br.com.doemais.dao.DoadorDAO;
+import br.com.doemais.dbo.Agendados;
 import br.com.doemais.dbo.Doacoes;
 import br.com.doemais.dbo.Doador;
 
@@ -117,6 +118,27 @@ public class DoadorServices {
 
 		return Response.status(404).entity(msg).build();
 	}
+	
+	@POST
+	@Path("/addAgenda")
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	public Response addAgenda(Agendados agendado) {
+		String msg = "";
+		try {
+
+			int idGerado = doadorDAO.addAgenda(agendado);
+			if(idGerado != 0) {
+				return Response.status(201).build();
+			}else {
+				return Response.status(404).build();
+			}
+		} catch (Exception e) {
+			msg = "Erro ao add o usuário, entre em contato com o administrador!" + e.getMessage();
+			e.printStackTrace();
+		}
+
+		return Response.status(404).entity(msg).build();
+	}	
 
 	@POST
 	@Path("/atualizaDoacao")
