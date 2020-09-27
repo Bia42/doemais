@@ -18,7 +18,7 @@ import br.com.doemais.dbo.Doador;
 @Path("/doador")
 public class DoadorServices {
 
-	private static final String CHARSET_UTF8 = ";charset=utf-8";
+	private static final String CHARSET_UTF8 = ";charset=iso-8859-1";
 
 	private DoadorDAO doadorDAO;
 
@@ -50,7 +50,7 @@ public class DoadorServices {
 	}
 	@POST
 	@Path("/historico")
-	@Consumes("application/json ; charset=UTF-8")
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
 	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
 	public Doador historico(Doador doador) {
 		Doador retorno = null;
