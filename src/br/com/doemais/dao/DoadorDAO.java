@@ -253,20 +253,15 @@ public class DoadorDAO {
 	public int addAgenda(Agendados agenda) throws Exception {
 		int idGerado = 0;
 		Connection conexao = BDConfig.getConnection();
-
-		String sql = "INSERT INTO agendados(agenda_id,doador_id) VALUES(?, ?)";
+		
+		String sql = "exec add_agenda ?,?";
 		PreparedStatement statement = conexao.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
 		statement.setInt(1, agenda.getAgendaId());
 		statement.setInt(2, agenda.getDoadorId());	
 
 		statement.execute();
 		
-		ResultSet rs = statement.getGeneratedKeys();
-		if (rs.next()) {
-			idGerado = rs.getInt(1);
-		}
-		
-		return idGerado;
+		return 1;
 	}
 	
 	public boolean updateDoacao(int doacaoId, int confirmacao) throws Exception {
