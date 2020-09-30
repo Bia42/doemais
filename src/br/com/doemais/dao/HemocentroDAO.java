@@ -313,8 +313,8 @@ public class HemocentroDAO {
 		statement.setInt(1, atendimento.getHemocentroId());
 		statement.setInt(2, atendimento.getDia());
 		statement.setInt(3, atendimento.getDiaFinal());
-		statement.setInt(4, Integer.parseInt(atendimento.getHoraInicio().substring(0,atendimento.getHoraInicio().indexOf(':'))));
-		statement.setInt(5, Integer.parseInt(atendimento.getHoraFinal().substring(0,atendimento.getHoraFinal().indexOf(':'))));
+		statement.setInt(4, Integer.parseInt(atendimento.getHoraFinal().substring(0,atendimento.getHoraFinal().indexOf(':'))));
+		statement.setInt(5, Integer.parseInt(atendimento.getHoraInicio().substring(0,atendimento.getHoraInicio().indexOf(':'))));
 		statement.setInt(6,  Integer.parseInt(atendimento.getHoraInicio().substring(atendimento.getHoraInicio().indexOf(':')+1)));
 		statement.setInt(7,  Integer.parseInt(atendimento.getHoraFinal().substring(atendimento.getHoraFinal().indexOf(':')+1)));
 		statement.setString(8,  atendimento.getPeriodoFinal());
