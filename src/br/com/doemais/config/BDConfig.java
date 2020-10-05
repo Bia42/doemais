@@ -19,6 +19,7 @@ public class BDConfig {
 			conexao = DriverManager.getConnection(url);
 		} catch (ClassNotFoundException e) {
 			// Erro caso o driver JDBC não foi instalado
+			//LUCAS CHEGOU
 			e.printStackTrace();
 		} catch (SQLException e) {
 			// Erro caso haja problemas para se conectar ao banco de dados
