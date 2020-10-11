@@ -176,6 +176,38 @@ public class DoadorDAO {
 		return lista;
 	}
 	
+	public List<Agendados> listarAgendas(int doadorId) throws Exception {
+		List<Agendados> lista = new ArrayList<>();
+
+		Connection conexao = BDConfig.getConnection();
+
+		String sql = "select "
+				+ "		c.nome, d.razao_social, b.horario_doacao, a.flag_checkin, a.id agendaId"
+				+ "	from "
+				+ "		agendados a" + 
+				"		inner join agenda_hemocentro b on a.agenda_id = b.id "
+				+ "		inner join doador c on c.id = a.doador_id "
+				+ "		inner join hemocentro d on d.id = b.hemocentro_id "
+				+ " where a.doador_id = ? ";
+
+		PreparedStatement statement = conexao.prepareStatement(sql);
+		statement.setInt(1, doadorId);
+
+		ResultSet rs = statement.executeQuery();
+
+		while (rs.next()) {
+			Agendados agendados = new Agendados();
+			agendados.setHemocentro(rs.getString("razao_social"));
+			agendados.setNomeDoador(rs.getString("nome"));
+			agendados.setHorarioDoacao(rs.getString("horario_doacao"));
+			agendados.setFlag_checkin(rs.getString("flag_checkin"));
+			agendados.setAgendaId(rs.getInt("agendaId"));
+			lista.add(agendados);
+		}
+
+		return lista;
+	}
+	
 	public Doador realizarLogin(String email, String senha) throws Exception {
 		Doador doador = null;
 
@@ -280,5 +312,26 @@ public class DoadorDAO {
 		}
 		return false;
 	}
+	
+	public boolean checkinDoador(int agendaId) throws Exception {
+		Connection conexao = BDConfig.getConnection();
+
+		String sql = " update " + 
+				"	agendados" + 
+				" set" + 
+				"	flag_checkin = '1' " + 	
+				" where id = ?";
+
+		PreparedStatement statement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+		statement.setInt(1, agendaId);
+
+		int updateCount = statement.executeUpdate();
+		
+		if(updateCount == 1) {
+			return true;
+		}
+		return false;
+	}
+	
 	
 }

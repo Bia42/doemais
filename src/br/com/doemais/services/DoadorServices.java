@@ -1,5 +1,6 @@
 package br.com.doemais.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -67,6 +68,25 @@ public class DoadorServices {
 		return null;
 	}
 	@POST
+	@Path("/listAgendados")
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	public 	List<Agendados> listAgendados(Agendados agendados) {
+		List<Agendados> lista = new ArrayList<>();
+
+		try {
+			lista = doadorDAO.listarAgendas(agendados.getDoadorId());
+			if (lista != null) {
+				return lista;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
+	
+	@POST
 	@Path("/listUser")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
 	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
@@ -82,6 +102,7 @@ public class DoadorServices {
 		}
 		return Response.status(404).entity("Email ou senha incorretos").build();
 	}
+
 
 	@GET
 	@Path("/list")
@@ -158,6 +179,23 @@ public class DoadorServices {
 		return Response.status(404).entity(msg).build();
 	}
 
+	@POST
+	@Path("/checkIn")
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	public Response checkIn(Agendados agen) {
+		String msg = "";
+
+		try {
+			boolean response = doadorDAO.checkinDoador(agen.getAgendaId());
+			if (response == true)
+				return Response.status(200).build();
+		} catch (Exception e) {
+			msg = "Erro ao realizar checkin";
+			e.printStackTrace();
+		}
+
+		return Response.status(404).entity(msg).build();
+	}
 	@POST
 	@Path("/listDoacoes")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)

@@ -7,6 +7,8 @@ public class Agendados {
 	private String horarioDoacao;
 	private String nomeDoador;
 	private String CpfDoador;
+	private String hemocentro;
+	private String flag_checkin;
 
 	public int getAgendaId() {
 		return agendaId;
@@ -38,6 +40,19 @@ public class Agendados {
 	public void setCpfDoador(String cpfDoador) {
 		CpfDoador = cpfDoador;
 	}
+	public String getHemocentro() {
+		return hemocentro;
+	}
+	public void setHemocentro(String hemocentro) {
+		this.hemocentro = hemocentro;
+	}
+	public String getFlag_checkin() {
+		return flag_checkin;
+	}
+	public void setFlag_checkin(String flag_checkin) {
+		this.flag_checkin = flag_checkin;
+	}
+	
 	
 	
 
