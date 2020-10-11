@@ -1,7 +1,7 @@
 package br.com.doemais.dbo;
 
 public class Agendados {
-	
+	//bia
 	private int agendaId;
 	private int doadorId;
 	private String horarioDoacao;
