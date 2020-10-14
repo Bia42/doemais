@@ -1,12 +1,14 @@
 package br.com.doemais.dbo;
 
 public class Campanhas {
+	private int campanhaId;
 	private String descricao;
 	private String tipoSangue;
 	private int hemocentroId;
 	private int patrocinadorId;
 	private String conteudo;
 	private int quantCupons;
+	private String patrocinador;
 	
 	public String getDescricao() {
 		return descricao;
@@ -44,6 +46,21 @@ public class Campanhas {
 	public void setQuantCupons(int quantCupons) {
 		this.quantCupons = quantCupons;
 	}
+	public String getPatrocinador() {
+		return patrocinador;
+	}
+	public void setPatrocinador(String patrocinador) {
+		this.patrocinador = patrocinador;
+	}
+	public int getCampanhaId() {
+		return campanhaId;
+	}
+	public void setCampanhaId(int campanhaId) {
+		this.campanhaId = campanhaId;
+	}
+	
+	
+	
 	
 	
 }

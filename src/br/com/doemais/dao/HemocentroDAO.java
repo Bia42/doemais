@@ -1,19 +1,22 @@
 package br.com.doemais.dao;
 
+import java.security.GeneralSecurityException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import br.com.doemais.components.JavaMailUtil;
 import br.com.doemais.config.BDConfig;
 import br.com.doemais.dbo.AgendaHemocentro;
 import br.com.doemais.dbo.Agendados;
 import br.com.doemais.dbo.AtendimentoHemocentro;
-import br.com.doemais.dbo.Doacoes;
+import br.com.doemais.dbo.Campanhas;
 import br.com.doemais.dbo.Hemocentro;
 import br.com.doemais.dbo.UsuariosHemocentro;
 
@@ -382,5 +385,59 @@ public class HemocentroDAO {
 		return agendados;
 	}
 	
+	public List<Campanhas> listarCampanhas() throws Exception {
+		List<Campanhas> lista = new ArrayList<>();
+
+		Connection conexao = BDConfig.getConnection();
+
+		String sql = "select "
+				+ "		 b.razao_social, a.descricao, a.id campanhaId"
+				+ "	from "
+				+ "		campanhas a" + 
+				"		inner join patrocinador b on a.patrocinador_id = b.id "
+				+ " where hemocentro_id is null";
+		PreparedStatement statement = conexao.prepareStatement(sql);
+
+		ResultSet rs = statement.executeQuery();
+
+		while (rs.next()) {
+			Campanhas camp = new Campanhas();
+			camp.setDescricao(rs.getString("descricao"));
+			camp.setPatrocinador(rs.getString("razao_social"));
+			camp.setCampanhaId(rs.getInt("campanhaId"));
+			lista.add(camp);
+		}
+
+		return lista;
+	}
+	
+	public boolean dilvugarCampanhas(Campanhas campanha) throws GeneralSecurityException {
+		Connection conexao = BDConfig.getConnection();
+
+		if(campanha.getTipoSangue().equals("T")) {
+
+			String sql = "select "
+					+ "		 email, nome"
+					+ "	from "
+					+ "		doador ";
+			PreparedStatement statement;
+			
+			try {
+				statement = conexao.prepareStatement(sql);
+				ResultSet rs = statement.executeQuery();
+				
+				while (rs.next()) {
+					JavaMailUtil.sendMail(rs.getString("email"), "Olá, " + rs.getString("nome") + '\n' + campanha.getDescricao(), campanha.getConteudo());
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}else {
+			
+		}
+		return true;
+	}
 	
 }

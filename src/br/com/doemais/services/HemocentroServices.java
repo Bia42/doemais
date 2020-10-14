@@ -15,6 +15,7 @@ import br.com.doemais.dao.HemocentroDAO;
 import br.com.doemais.dbo.AgendaHemocentro;
 import br.com.doemais.dbo.Agendados;
 import br.com.doemais.dbo.AtendimentoHemocentro;
+import br.com.doemais.dbo.Campanhas;
 import br.com.doemais.dbo.Hemocentro;
 import br.com.doemais.dbo.UsuariosHemocentro;
 
@@ -127,6 +128,20 @@ public class HemocentroServices {
 		}
 		return lista;
 	}
+	
+	@GET
+	@Path("/listCampanhas")
+	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	public List<Campanhas> listarCampanhas() {
+		List<Campanhas> lista = null;
+		try {
+			lista = hemocentroDAO.listarCampanhas();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
+
 
 	@GET
 	@Path("/listHemocentrosPorNivel")
@@ -183,6 +198,26 @@ public class HemocentroServices {
 
 		return Response.status(404).entity(msg).build();
 	}
+	
+	@POST
+	@Path("/dilvugarCampanha")
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	public Response divulgarCampanha(Campanhas camp) {
+		String msg = "";
+
+		try {
+
+			boolean idGerado = hemocentroDAO.dilvugarCampanhas(camp);
+			msg = String.valueOf(idGerado);
+			return Response.status(201).entity("Campanha divulgada com sucesso!").build();
+
+		} catch (Exception e) {
+			msg = "Erro ao adicionar o usuário, entre em contato com o administrador!" + e.getMessage();
+		}
+
+		return Response.status(404).entity(msg).build();
+	}
+
 
 	@POST
 	@Path("/atualizaDados")
