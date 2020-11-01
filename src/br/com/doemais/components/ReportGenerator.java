@@ -10,6 +10,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 
 public class ReportGenerator {
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public byte[]  generateJasperReportPDF(HttpServletRequest httpServletRequest, String jasperReportName, byte[] outputStream, Map parametros) {
 		
 		try {	
