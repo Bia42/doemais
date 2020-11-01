@@ -1,26 +1,20 @@
 package br.com.doemais.components;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.sql.Connection;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
-
 import br.com.doemais.config.BDConfig;
-import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.export.JRPdfExporter;
 
 public class ReportGenerator {
 
 	public byte[]  generateJasperReportPDF(HttpServletRequest httpServletRequest, String jasperReportName, byte[] outputStream, Map parametros) {
 		
-		try {			
-			String reportLocation = httpServletRequest.getRealPath("/") +jasperReportName+".jasper";
-			//String location = httpServletRequest.getRealPath("/");
+		try {	
+	
+			String reportLocation = httpServletRequest.getServletContext().getRealPath("/")+jasperReportName+".jasper";
 			
 		    // Cria a conexão com o banco de dados. 
  			Connection conexao = null;
