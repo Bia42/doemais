@@ -267,6 +267,7 @@ public class HemocentroServices {
 		return Response.status(404).entity(msg).build();
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@POST
 	@Path("/relatorioNivel")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
