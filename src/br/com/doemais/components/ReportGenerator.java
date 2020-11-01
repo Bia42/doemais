@@ -17,7 +17,6 @@ import net.sf.jasperreports.engine.export.JRPdfExporter;
 public class ReportGenerator {
 
 	public byte[]  generateJasperReportPDF(HttpServletRequest httpServletRequest, String jasperReportName, byte[] outputStream, Map parametros) {
-		JRPdfExporter exporter = new JRPdfExporter();
 		
 		try {			
 			String reportLocation = httpServletRequest.getRealPath("/") +jasperReportName+".jasper";
