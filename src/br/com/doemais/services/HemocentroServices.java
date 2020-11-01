@@ -275,12 +275,35 @@ public class HemocentroServices {
 		String msg = "";
 		try {
 			String arquivoJrxml = "h_niveisSangue";
+			JRPdfExporter exporter = new JRPdfExporter();
 			
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 			Map fillParams = new HashMap(); 
-			fillParams.put("hemocentro_id", hemocentro.getHemocentroId());
-			PdfGenerator pdf = new PdfGenerator();
-			byte[] bytes= pdf.generateJasperReportPDF(httpServletRequest, arquivoJrxml, outputStream, fillParams);
+			fillParams.put("hemocentro_id", hemocentro.getHemocentroId());		
+			
+			try {			
+				String reportLocation = httpServletRequest.getRealPath("/") +arquivoJrxml+".jasper";
+				
+			    // Cria a conexão com o banco de dados. 
+	 			Connection conexao = null;
+	 			try {
+	 			  conexao = BDConfig.getConnection();
+	 			} catch (Exception e) {
+	 				e.printStackTrace();
+	 			}
+			    
+			    JasperPrint jasperPrint = JasperFillManager.fillReport(reportLocation, fillParams, conexao);
+			    exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);   
+			    exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, outputStream);
+			    exporter.exportReport();
+			    
+			} catch (Exception e) {
+			    e.printStackTrace();
+			    System.out.println("Erro ao gerar relatório..."+e);
+			} finally {
+			}
+			
+			byte[] bytes= outputStream.toByteArray();
 
 			String nomeRelatorio= arquivoJrxml + ".pdf";
 			
