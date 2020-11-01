@@ -1,5 +1,5 @@
 package br.com.doemais.services;
-
+import br.com.doemais.components.PdfGenerator;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,7 +26,6 @@ import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.internal.guava.HashMultimap;
 
-import br.com.doemais.components.PdfGenerator;
 import br.com.doemais.config.BDConfig;
 import br.com.doemais.dao.HemocentroDAO;
 import br.com.doemais.dbo.AgendaHemocentro;
@@ -274,7 +273,6 @@ public class HemocentroServices {
 	@Produces("application/pdf")
 	public Response relatorioSangue(Hemocentro hemocentro) {
 		String msg = "";
-		byte[] msgs = null;
 		try {
 			String arquivoJrxml = "h_niveisSangue";
 			
@@ -286,13 +284,10 @@ public class HemocentroServices {
 
 			String nomeRelatorio= arquivoJrxml + ".pdf";
 			
-			//return bytes;
-			
 			return Response.ok(bytes).type("application/pdf").header("Content-Disposition","attachment; filename=\"" + nomeRelatorio + "\"").build();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		//return msgs;
 		return Response.status(404).entity(msg).build();
 	}
 	/*
