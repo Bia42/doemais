@@ -25,6 +25,7 @@ import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.internal.guava.HashMultimap;
 
+import br.com.doemais.components.ReportGenerator;
 import br.com.doemais.config.BDConfig;
 import br.com.doemais.dao.HemocentroDAO;
 import br.com.doemais.dbo.AgendaHemocentro;
@@ -312,6 +313,31 @@ public class HemocentroServices {
 		}
 		return Response.status(404).entity(msg).build();
 	}
+	
+	@POST
+	@Path("/relatorioNivel")
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	@Produces("application/pdf")
+	public Response relatorioNivel(Hemocentro hemocentro) {
+		String msg = "";
+		try {
+			String arquivoJrxml = "h_niveisSangue";
+			
+			byte[] outputStream = null;
+			Map fillParams = new HashMap(); 
+			fillParams.put("hemocentro_id", hemocentro.getHemocentroId());
+			ReportGenerator pdf = new ReportGenerator();
+			byte[] bytes= pdf.generateJasperReportPDF(httpServletRequest, arquivoJrxml, outputStream, fillParams);
+
+			String nomeRelatorio= arquivoJrxml + ".pdf";
+			
+			return Response.ok(bytes).type("application/pdf").header("Content-Disposition","inline; filename=\"" + nomeRelatorio + "\"").build();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(404).entity(msg).build();
+	}
+	
 	/*
 	 * @GET
 	 * 
