@@ -1,16 +1,33 @@
 package br.com.doemais.services;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.swing.JOptionPane;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.glassfish.jersey.internal.guava.HashMultimap;
+
+import br.com.doemais.components.PdfGenerator;
+import br.com.doemais.config.BDConfig;
 import br.com.doemais.dao.HemocentroDAO;
 import br.com.doemais.dbo.AgendaHemocentro;
 import br.com.doemais.dbo.Agendados;
@@ -18,6 +35,17 @@ import br.com.doemais.dbo.AtendimentoHemocentro;
 import br.com.doemais.dbo.Campanhas;
 import br.com.doemais.dbo.Hemocentro;
 import br.com.doemais.dbo.UsuariosHemocentro;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
 
 @Path("/hemocentro")
 public class HemocentroServices {
@@ -25,6 +53,9 @@ public class HemocentroServices {
 	private static final String CHARSET_UTF8 = ";charset=iso-8859-1";
 
 	private HemocentroDAO hemocentroDAO;
+	
+	@Context
+	private HttpServletRequest httpServletRequest;
 
 	@PostConstruct
 	private void init() {
@@ -236,7 +267,34 @@ public class HemocentroServices {
 
 		return Response.status(404).entity(msg).build();
 	}
+	
+	@POST
+	@Path("/relatorioSangue")
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	@Produces("application/pdf")
+	public Response relatorioSangue(Hemocentro hemocentro) {
+		String msg = "";
+		byte[] msgs = null;
+		try {
+			String arquivoJrxml = "h_niveisSangue";
+			
+			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+			Map fillParams = new HashMap(); 
+			fillParams.put("hemocentro_id", hemocentro.getHemocentroId());
+			PdfGenerator pdf = new PdfGenerator();
+			byte[] bytes= pdf.generateJasperReportPDF(httpServletRequest, arquivoJrxml, outputStream, fillParams);
 
+			String nomeRelatorio= arquivoJrxml + ".pdf";
+			
+			//return bytes;
+			
+			return Response.ok(bytes).type("application/pdf").header("Content-Disposition","attachment; filename=\"" + nomeRelatorio + "\"").build();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		//return msgs;
+		return Response.status(404).entity(msg).build();
+	}
 	/*
 	 * @GET
 	 * 
