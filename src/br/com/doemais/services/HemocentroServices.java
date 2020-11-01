@@ -1,19 +1,10 @@
 package br.com.doemais.services;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.sql.Connection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.swing.JOptionPane;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -23,10 +14,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.glassfish.jersey.internal.guava.HashMultimap;
-
 import br.com.doemais.components.ReportGenerator;
-import br.com.doemais.config.BDConfig;
 import br.com.doemais.dao.HemocentroDAO;
 import br.com.doemais.dbo.AgendaHemocentro;
 import br.com.doemais.dbo.Agendados;
@@ -34,17 +22,6 @@ import br.com.doemais.dbo.AtendimentoHemocentro;
 import br.com.doemais.dbo.Campanhas;
 import br.com.doemais.dbo.Hemocentro;
 import br.com.doemais.dbo.UsuariosHemocentro;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRExporterParameter;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.design.JasperDesign;
-import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.engine.xml.JRXmlLoader;
 
 @Path("/hemocentro")
 public class HemocentroServices {
