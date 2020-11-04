@@ -41,6 +41,7 @@ public class HemocentroServices {
 			userHemoLogado = hemocentroDAO.realizarLogin(userHemo.getEmail(), userHemo.getSenha());
 			if (userHemoLogado != null) {
 				return Response.status(200).entity(userHemoLogado).build();
+
 			}
 			if (hemocentroDAO.verificarUserExistente(userHemo.getEmail())) {
 				return Response.status(404).entity("Senha incorreta!").build();
@@ -77,6 +78,22 @@ public class HemocentroServices {
 		 List<Agendados> retorno = null;
 		try {
 			retorno = hemocentroDAO.listarAgendas(hemocentro.getHemocentroId());
+			if (retorno != null) {
+				return retorno;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return retorno;
+	}
+	@POST
+	@Path("/checkInPendentes")
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	public List<Agendados> checkInPendentes(Hemocentro hemocentro) {
+		 List<Agendados> retorno = null;
+		try {
+			retorno = hemocentroDAO.checkInPendentes(hemocentro.getHemocentroId());
 			if (retorno != null) {
 				return retorno;
 			}
@@ -236,7 +253,65 @@ public class HemocentroServices {
 
 		return Response.status(404).entity(msg).build();
 	}
+	@POST
+	@Path("/confirmacaoCheckIn")
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	public Response confirmacaoCheckIn(Agendados agen) {
+		String msg = "";
 
+		try {
+			boolean response = hemocentroDAO.confirmacaoCheckin(agen.getAgendaId());
+			if (response == true)
+				return Response.status(200).build();
+		} catch (Exception e) {
+			msg = "Erro ao realizar checkin";
+			e.printStackTrace();
+		}
+
+		return Response.status(404).entity(msg).build();
+	}
+	@POST
+	@Path("/desmarcarAgendamento")
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	public Response desmarcarAgendamento(Agendados agen) {
+		String msg = "";
+
+		try {
+			boolean response = hemocentroDAO.desmarcarCheckIn(agen.getAgendaId());
+			if (response == true)
+				return Response.status(200).build();
+		} catch (Exception e) {
+			msg = "Erro ao realizar checkin";
+			e.printStackTrace();
+		}
+
+		return Response.status(404).entity(msg).build();
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@POST
+	@Path("/relatorioNivel")
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	@Produces("application/pdf")
+	public Response relatorioNivel(Hemocentro hemocentro) {
+		String msg = "";
+		try {
+			String arquivoJrxml = "h_niveisSangue";
+			
+			byte[] outputStream = null;
+			Map fillParams = new HashMap(); 
+			fillParams.put("hemocentro_id", hemocentro.getHemocentroId());
+			ReportGenerator pdf = new ReportGenerator();
+			byte[] bytes= pdf.generateJasperReportPDF(httpServletRequest, arquivoJrxml, outputStream, fillParams);
+
+			String nomeRelatorio= arquivoJrxml + ".pdf";
+			
+			return Response.ok(bytes).type("application/pdf").header("Content-Disposition","inline; filename=\"" + nomeRelatorio + "\"").build();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(404).entity(msg).build();
+	}
 	/*
 	 * @GET
 	 * 
