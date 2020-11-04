@@ -335,6 +335,12 @@ public class HemocentroDAO {
 			statement2.executeUpdate();
 		}
 		
+		PreparedStatement stmtLog = null;
+
+		stmtLog = conexao.prepareStatement("exec log_add null,?,'INSERT','atendimento_hemocentro','WEB_CRIACAOAGENDA'");
+		stmtLog.setInt(1, atendimento.getHemocentroId());
+		stmtLog.execute();
+		
 		return idGerado;
 	}
 	
@@ -411,6 +417,37 @@ public class HemocentroDAO {
 		return lista;
 	}
 	
+	public List<Agendados> checkInPendentes(int hemocentroId) throws Exception {
+		List<Agendados> agendados = new ArrayList<>();
+
+		Connection conexao = BDConfig.getConnection();
+
+		String sql = "select "
+				+ "	c.nome, c.cpf, b.horario_doacao, c.id doadorId, a.id agendaId"
+				+ "	from "
+				+ "	agendados a" + 
+				"	inner join agenda_hemocentro b on a.agenda_id = b.id"
+				+ "	inner join doador c on a.doador_id = c.id"
+				+ " where b.hemocentro_id = ? and flag_confirmacao is null";
+
+		PreparedStatement statement = conexao.prepareStatement(sql);
+		statement.setInt(1, hemocentroId);
+
+		ResultSet rs = statement.executeQuery();
+
+		while (rs.next()) {
+			Agendados agendado = new Agendados();
+			agendado.setNomeDoador(rs.getString("nome"));
+			agendado.setCpfDoador(rs.getString("cpf"));
+			agendado.setHorarioDoacao(rs.getString("horario_doacao"));
+			agendado.setAgendaId(rs.getInt("agendaId"));
+			agendado.setDoadorId(rs.getInt("doadorId"));
+			agendados.add(agendado);
+		}
+
+		return agendados;
+	}
+	
 	public boolean dilvugarCampanhas(Campanhas campanha) throws GeneralSecurityException {
 		Connection conexao = BDConfig.getConnection();
 
@@ -438,6 +475,54 @@ public class HemocentroDAO {
 			
 		}
 		return true;
+	}
+	public boolean confirmacaoCheckin(int agendaId) throws Exception {
+		Connection conexao = BDConfig.getConnection();
+
+		String sql = " update " + 
+				"	agendados" + 
+				" set" + 
+				"	flag_confirmacao = '1' " + 	
+				" where id = ?";
+
+		PreparedStatement statement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+		statement.setInt(1, agendaId);
+
+		int updateCount = statement.executeUpdate();
+		PreparedStatement stmtLog = null;
+
+		stmtLog = conexao.prepareStatement("exec log_add null,?,'CONF_CHECKIN','agendados','CONFIRMACAO_CHECK_IN'");
+		stmtLog.setInt(1, agendaId);
+		stmtLog.execute();
+		
+		if(updateCount == 1) {
+			return true;
+		}
+		return false;
+	}
+	public boolean desmarcarCheckIn(int agendaId) throws Exception {
+		Connection conexao = BDConfig.getConnection();
+
+		String sql = " update " + 
+				"	agendados" + 
+				" set" + 
+				"	flag_confirmacao = '0' " + 	
+				" where id = ?";
+
+		PreparedStatement statement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+		statement.setInt(1, agendaId);
+
+		int updateCount = statement.executeUpdate();
+		PreparedStatement stmtLog = null;
+
+		stmtLog = conexao.prepareStatement("exec log_add null,?,'CONF_CHECKIN','agendados','CONFIRMACAO_CHECK_IN'");
+		stmtLog.setInt(1, agendaId);
+		stmtLog.execute();
+		
+		if(updateCount == 1) {
+			return true;
+		}
+		return false;
 	}
 	
 }

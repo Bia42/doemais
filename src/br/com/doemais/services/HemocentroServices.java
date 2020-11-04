@@ -1,16 +1,20 @@
 package br.com.doemais.services;
-
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import br.com.doemais.components.ReportGenerator;
 import br.com.doemais.dao.HemocentroDAO;
 import br.com.doemais.dbo.AgendaHemocentro;
 import br.com.doemais.dbo.Agendados;
@@ -25,6 +29,9 @@ public class HemocentroServices {
 	private static final String CHARSET_UTF8 = ";charset=iso-8859-1";
 
 	private HemocentroDAO hemocentroDAO;
+	
+	@Context
+	private HttpServletRequest httpServletRequest;
 
 	@PostConstruct
 	private void init() {
@@ -253,12 +260,12 @@ public class HemocentroServices {
 
 		return Response.status(404).entity(msg).build();
 	}
+
 	@POST
 	@Path("/confirmacaoCheckIn")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
 	public Response confirmacaoCheckIn(Agendados agen) {
 		String msg = "";
-
 		try {
 			boolean response = hemocentroDAO.confirmacaoCheckin(agen.getAgendaId());
 			if (response == true)
@@ -312,6 +319,7 @@ public class HemocentroServices {
 		}
 		return Response.status(404).entity(msg).build();
 	}
+
 	/*
 	 * @GET
 	 * 

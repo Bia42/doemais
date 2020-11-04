@@ -182,7 +182,7 @@ public class DoadorDAO {
 		Connection conexao = BDConfig.getConnection();
 
 		String sql = "select "
-				+ "		c.nome, d.razao_social, b.horario_doacao, a.flag_checkin, a.id agendaId"
+				+ "		c.nome, d.razao_social, b.horario_doacao, a.flag_checkin, a.id agendaId, c.doador doadorId"
 				+ "	from "
 				+ "		agendados a" + 
 				"		inner join agenda_hemocentro b on a.agenda_id = b.id "
@@ -200,6 +200,7 @@ public class DoadorDAO {
 			agendados.setHemocentro(rs.getString("razao_social"));
 			agendados.setNomeDoador(rs.getString("nome"));
 			agendados.setHorarioDoacao(rs.getString("horario_doacao"));
+			agendados.setDoadorId(rs.getInt("doadorId"));
 			agendados.setFlag_checkin(rs.getString("flag_checkin"));
 			agendados.setAgendaId(rs.getInt("agendaId"));
 			lista.add(agendados);
@@ -307,6 +308,12 @@ public class DoadorDAO {
 
 		int updateCount = statement.executeUpdate();
 		
+		PreparedStatement stmtLog = null;
+
+		stmtLog = conexao.prepareStatement("exec log_add ?,null,'CONFIRMACAO','doacoes','APP_TESTECONSC'");
+		stmtLog.setInt(1, doacaoId);
+		stmtLog.execute();
+		
 		if(updateCount == 1) {
 			return true;
 		}
@@ -326,6 +333,12 @@ public class DoadorDAO {
 		statement.setInt(1, agendaId);
 
 		int updateCount = statement.executeUpdate();
+		
+		PreparedStatement stmtLog = null;
+
+		stmtLog = conexao.prepareStatement("exec log_add ?,null,'CHECKIN','agendados','APP_CHECKIN'");
+		stmtLog.setInt(1, agendaId);
+		stmtLog.execute();
 		
 		if(updateCount == 1) {
 			return true;

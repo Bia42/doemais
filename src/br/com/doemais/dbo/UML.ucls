@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.2.4" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <class id="1" language="java" name="br.com.doemais.dbo.Credencial" project="doemais" 
+    file="/doemais/src/br/com/doemais/dbo/Credencial.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="196" width="149" x="284" y="-162"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="br.com.doemais.dbo.Doador" project="doemais" 
+    file="/doemais/src/br/com/doemais/dbo/Doador.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="1078" width="208" x="473" y="-162"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="br.com.doemais.dbo.AgendaHemocentro" project="doemais" 
+    file="/doemais/src/br/com/doemais/dbo/AgendaHemocentro.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="358" width="202" x="721" y="-162"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="br.com.doemais.dbo.Hemocentro" project="doemais" 
+    file="/doemais/src/br/com/doemais/dbo/Hemocentro.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="898" width="275" x="963" y="-162"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="br.com.doemais.dbo.Patrocinador" project="doemais" 
+    file="/doemais/src/br/com/doemais/dbo/Patrocinador.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="844" width="192" x="1278" y="-162"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="br.com.doemais.dbo.Campanhas" project="doemais" 
+    file="/doemais/src/br/com/doemais/dbo/Campanhas.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="520" width="185" x="1510" y="-162"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="br.com.doemais.dbo.GeradorDeCupom" project="doemais" 
+    file="/doemais/src/br/com/doemais/dbo/GeradorDeCupom.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="106" width="153" x="1735" y="-162"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="br.com.doemais.dbo.Cupom" project="doemais" 
+    file="/doemais/src/br/com/doemais/dbo/Cupom.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="484" width="186" x="1928" y="-162"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="br.com.doemais.dbo.AtendimentoHemocentro" project="doemais" 
+    file="/doemais/src/br/com/doemais/dbo/AtendimentoHemocentro.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="574" width="200" x="2154" y="-162"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="br.com.doemais.dbo.Doacoes" project="doemais" 
+    file="/doemais/src/br/com/doemais/dbo/Doacoes.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="466" width="219" x="2394" y="-162"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="br.com.doemais.dbo.UsuariosHemocentro" project="doemais" 
+    file="/doemais/src/br/com/doemais/dbo/UsuariosHemocentro.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="1078" width="208" x="2653" y="-162"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="br.com.doemais.dbo.Usuario" project="doemais" 
+    file="/doemais/src/br/com/doemais/dbo/Usuario.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="376" width="197" x="2901" y="-162"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="br.com.doemais.dbo.Agendados" project="doemais" 
+    file="/doemais/src/br/com/doemais/dbo/Agendados.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="466" width="197" x="3138" y="-162"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

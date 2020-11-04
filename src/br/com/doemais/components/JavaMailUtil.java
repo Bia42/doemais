@@ -35,8 +35,8 @@ public class JavaMailUtil {
 		  MailSSLSocketFactory sf = new MailSSLSocketFactory();
 		  sf.setTrustAllHosts(true);
 		  prop.put("mail.smtp.ssl.socketFactory", sf);
-		String myAccountEmail = "beatrizo237@gmail.com";
-		String password = "nicom2113$";
+		String myAccountEmail = "doemais.contato@gmail.com";
+		String password = "Nicom2113$";
 		
 	    Session session = Session.getInstance(prop,
 	  	      new Authenticator() {
@@ -64,7 +64,7 @@ public class JavaMailUtil {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(myAccountEmail));
 			message.setRecipient(Message.RecipientType.TO, new InternetAddress(recepient));
-			message.setSubject("My first email");
+			message.setSubject("Venha doar Sangue Conosco - Hemocentro Unicamp");
 			message.setText(corpo);
 			return message;
 		}catch(Exception ex) {
