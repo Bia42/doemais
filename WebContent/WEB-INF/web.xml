@@ -20,10 +20,6 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-	<filter>
-		<filter-name>CorsFilter</filter-name>
-		<filter-class>br.com.doemais.components.CORSFilter</filter-class>
-	</filter>
 	<servlet-mapping>
 		<servlet-name>Jersey REST Service</servlet-name>
 		<url-pattern>/rest/*</url-pattern>
