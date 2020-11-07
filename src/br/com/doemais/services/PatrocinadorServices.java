@@ -1,19 +1,25 @@
 package br.com.doemais.services;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import br.com.doemais.components.ReportGenerator;
 import br.com.doemais.dao.PatrocinadorDAO;
 import br.com.doemais.dbo.Campanhas;
 import br.com.doemais.dbo.Cupom;
+import br.com.doemais.dbo.Hemocentro;
 import br.com.doemais.dbo.Patrocinador;
 
 @Path("/patrocinador")
@@ -22,6 +28,9 @@ public class PatrocinadorServices {
 	private static final String CHARSET = ";charset=utf-8";
 
 	private PatrocinadorDAO patrocinadorDAO;
+	
+	@Context
+	private HttpServletRequest httpServletRequest;
 
 	@PostConstruct
 	private void init() {
@@ -206,6 +215,31 @@ public class PatrocinadorServices {
 			msg = "Erro ao add o usuário, entre em contato com o administrador!" + e.getMessage();
 		}
 
+		return Response.status(404).entity(msg).build();
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@POST
+	@Path("/relatorioContrato")
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET)
+	@Produces("application/pdf")
+	public Response relatorioContrato(Hemocentro hemocentro) {
+		String msg = "";
+		try {
+			String arquivoJrxml = "p_contrato";
+			
+			byte[] outputStream = null;
+			Map fillParams = new HashMap(); 
+			fillParams.put("hemocentro_id", hemocentro.getHemocentroId());
+			ReportGenerator pdf = new ReportGenerator();
+			byte[] bytes= pdf.generateJasperReportPDF(httpServletRequest, arquivoJrxml, outputStream, fillParams);
+
+			String nomeRelatorio= arquivoJrxml + ".pdf";
+			
+			return Response.ok(bytes).type("application/pdf").header("Content-Disposition","inline; filename=\"" + nomeRelatorio + "\"").build();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return Response.status(404).entity(msg).build();
 	}
 
