@@ -226,6 +226,7 @@ public class PatrocinadorServices {
 	public Response relatorioContrato(Hemocentro hemocentro) {
 		String msg = "";
 		try {
+			//Relatório Patrocinador
 			String arquivoJrxml = "p_contrato";
 			
 			byte[] outputStream = null;
