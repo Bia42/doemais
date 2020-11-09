@@ -226,7 +226,7 @@ public class PatrocinadorServices {
 	public Response relatorioContrato(Patrocinador pat) {
 		String msg = "";
 		try {
-			//Relatório Patrocinador
+			//Relatório Contrato
 			String arquivoJrxml = "p_contrato";			
 			byte[] outputStream = null;
 			Map fillParams = new HashMap(); 
