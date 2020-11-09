@@ -17,7 +17,7 @@ public class DoadorDAO {
 	
 	public List<Doador> listarDoadores() throws Exception {
 		List<Doador> lista = new ArrayList<>();
-
+			//bia2
 		Connection conexao = BDConfig.getConnection();
 
 		String sql = "select * from doador";
