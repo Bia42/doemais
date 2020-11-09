@@ -303,11 +303,12 @@ public class HemocentroServices {
 	public Response relatorioNivel(Hemocentro hemocentro) {
 		String msg = "";
 		try {
-			String arquivoJrxml = "h_niveisSangue";
+			String arquivoJrxml = hemocentro.getRelatorio();
 			
 			byte[] outputStream = null;
 			Map fillParams = new HashMap(); 
 			fillParams.put("hemocentro_id", hemocentro.getHemocentroId());
+			fillParams.put("mes", hemocentro.getMes());
 			ReportGenerator pdf = new ReportGenerator();
 			byte[] bytes= pdf.generateJasperReportPDF(httpServletRequest, arquivoJrxml, outputStream, fillParams);
 

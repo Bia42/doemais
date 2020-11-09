@@ -19,6 +19,8 @@ public class Hemocentro {
 	private String latitude;
 	private String horarios;
 	private Map<String,Double> niveisSangue;
+	private String mes;
+	private String relatorio;
 
 	public Map<String, Double> getNiveisSangue() {
 		return niveisSangue;
@@ -110,7 +112,18 @@ public class Hemocentro {
 	public void setHorarios(String horarios) {
 		this.horarios = horarios;
 	}
-	
+	public String getMes() {
+		return mes;
+	}
+	public void setMes(String mes) {
+		this.mes = mes;
+	}
+	public String getRelatorio() {
+		return relatorio;
+	}
+	public void setRelatorio(String relatorio) {
+		this.relatorio = relatorio;
+	}
 	
 	
 }

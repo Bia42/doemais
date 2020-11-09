@@ -223,15 +223,14 @@ public class PatrocinadorServices {
 	@Path("/relatorioContrato")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET)
 	@Produces("application/pdf")
-	public Response relatorioContrato(Hemocentro hemocentro) {
+	public Response relatorioContrato(Patrocinador pat) {
 		String msg = "";
 		try {
 			//Relatório Patrocinador
-			String arquivoJrxml = "p_contrato";
-			
+			String arquivoJrxml = "p_contrato";			
 			byte[] outputStream = null;
 			Map fillParams = new HashMap(); 
-			fillParams.put("hemocentro_id", hemocentro.getHemocentroId());
+			fillParams.put("patrocinador_id", pat.getPatrocinadorId());
 			ReportGenerator pdf = new ReportGenerator();
 			byte[] bytes= pdf.generateJasperReportPDF(httpServletRequest, arquivoJrxml, outputStream, fillParams);
 

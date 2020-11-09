@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="h_doacoes" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="h_doacoes" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="fa5e61a4-a79c-438f-b44a-ba3bb05955fd">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="hemocentro_id" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="mes" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
@@ -17,6 +20,7 @@ from
 	left join Usuarios d on d.id = c.doador_id and d.tipoSanguineo = b.tipoSangue
 where
 	a.id = $P{hemocentro_id}
+	and MONTH(c.data_hora) = $P{mes}
 group by b.id, b.tipoSangue, b.nivel, b.hemocentro_id, d.id, d.nome, d.email, d.tipoSanguineo]]>
 	</queryString>
 	<field name="tipoSangue" class="java.lang.String"/>
@@ -28,7 +32,7 @@ group by b.id, b.tipoSangue, b.nivel, b.hemocentro_id, d.id, d.nome, d.email, d.
 		<band height="125">
 			<barChart>
 				<chart>
-					<reportElement stretchType="RelativeToBandHeight" x="1" y="0" width="571" height="125"/>
+					<reportElement stretchType="RelativeToBandHeight" x="1" y="0" width="571" height="125" uuid="4dbe4328-ba21-4609-a702-a20a364a5f7a"/>
 					<chartTitle/>
 					<chartSubtitle/>
 					<chartLegend/>
@@ -41,7 +45,7 @@ group by b.id, b.tipoSangue, b.nivel, b.hemocentro_id, d.id, d.nome, d.email, d.
 					</categorySeries>
 				</categoryDataset>
 				<barPlot>
-					<plot orientation="Horizontal"/>
+					<plot/>
 					<itemLabel/>
 					<categoryAxisFormat>
 						<axisFormat/>

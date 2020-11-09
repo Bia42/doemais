@@ -16,6 +16,7 @@ public class Patrocinador {
 	private String nivel;
 	private String senha;
 	private String logo;
+	private Integer getPatrocinadorId;
 	
 	
 
@@ -103,8 +104,11 @@ public class Patrocinador {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-	
-
-	
+	public Integer getPatrocinadorId() {
+		return getPatrocinadorId;
+	}
+	public void setPatrocinadorId(Integer getPatrocinadorId) {
+		this.getPatrocinadorId = getPatrocinadorId;
+	}	
 	
 }
