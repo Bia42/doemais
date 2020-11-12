@@ -9,6 +9,7 @@ import java.util.List;
 
 import br.com.doemais.config.BDConfig;
 import br.com.doemais.dbo.Agendados;
+import br.com.doemais.dbo.Cupom;
 import br.com.doemais.dbo.Doacoes;
 import br.com.doemais.dbo.Doador;
 
@@ -214,7 +215,17 @@ public class DoadorDAO {
 
 		Connection conexao = BDConfig.getConnection();
 		PreparedStatement stmtLog = null;
-		String sql = "SELECT * FROM doador WHERE email = ? and senha = ?";
+		String sql = "select " + 
+				"	* " + 
+				" from " + 
+				"	Doador a " + 
+				"	left join (select " + 
+				"				count(*) doacoes, doador_id, max(horario_doacao) ultima_doacao " + 
+				"				from agendados a " + 
+				"					 inner join agenda_hemocentro b on a.agenda_id = b.id " + 
+				"				where flag_confirmacao = 1 " + 
+				"				group by " + 
+				"				doador_id) x on a.id = x.doador_id WHERE email = ? and senha = ?";
 
 		PreparedStatement statement = conexao.prepareStatement(sql);
 		statement.setString(1, email);
@@ -240,6 +251,8 @@ public class DoadorDAO {
 			doador.setLongitude(rs.getString("longitude"));
 			doador.setLatitude(rs.getString("latitude"));
 			doador.setCodUser(rs.getString("codUser"));
+			doador.setUltimaDoacao(rs.getString("ultima_doacao"));
+			doador.setQuantDoacoes(rs.getString("doacoes"));
 
 			stmtLog = conexao.prepareStatement("exec log_add ?,null,'LOGIN','doador','APP_LOGIN'");
 			stmtLog.setInt(1, rs.getInt("ID"));
@@ -278,6 +291,11 @@ public class DoadorDAO {
 		ResultSet rs = statement.getGeneratedKeys();
 		if (rs.next()) {
 			idGerado = rs.getInt(1);
+		}
+		if(doador.getCupom() != null) {
+			this.vinculoCupom(doador.getCupom(), idGerado);
+			this.listarCupomAutoGerado(doador.getCupom());
+			//TODO Notificação usuário
 		}
 		
 		return idGerado;
@@ -345,6 +363,59 @@ public class DoadorDAO {
 		}
 		return false;
 	}
+	public boolean vinculoCupom(String cupom, int usuarioId) throws Exception {
+		Connection conexao = BDConfig.getConnection();
+
+		String sql = "update cupom set usuario_id = ? where cupom = ?";
+
+		PreparedStatement statement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+		statement.setInt(1, usuarioId);
+		statement.setString(2, cupom);
+
+		int updateCount = statement.executeUpdate();
+		
+		if(updateCount == 1) {
+			return true;
+		}
+		return false;
+	}
+	
+	public Cupom listarCupomAutoGerado(String cupom2) throws Exception {
+		Cupom cupom = null;
+		boolean result= false;
+		Connection conexao = BDConfig.getConnection();
+
+		String sql = "select "
+				+ "	top 1 a.id idCupom, cupom, patrocinador_id, b.razao_social patrocinador, descricao "
+				+ " from "
+				+ "	Cupom a "
+				+ " inner join patrocinador b on a.patrocinador_id = b.id where usuario_id is null";
+
+		String sql2 = "select doador_id_ind from cupom where cupom = ?";
+
+		PreparedStatement statement = conexao.prepareStatement(sql);
+		ResultSet rs = statement.executeQuery();
+		
+		PreparedStatement statement2 = conexao.prepareStatement(sql2);
+		statement2.setString(1, cupom2);
+		ResultSet rs2 = statement2.executeQuery();
+		
+		while (rs.next()) {
+			if(rs2.next())
+				result = this.vinculoCupom(rs.getString("cupom"), rs2.getInt("doador_id_ind"));
+			if(result) {
+				cupom = new Cupom();
+				cupom.setCupomId(rs.getInt("idCupom"));
+				cupom.setPatrocinadorId(rs.getInt("patrocinador_id"));
+				cupom.setPatrocinador(rs.getString("patrocinador"));
+				cupom.setCupom(rs.getString("cupom"));
+				cupom.setDescricao(rs.getString("descricao"));
+			}
+
+		}
+		return cupom;
+	}
+	
 	
 	
 }

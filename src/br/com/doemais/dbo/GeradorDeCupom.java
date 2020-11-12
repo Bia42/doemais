@@ -8,16 +8,9 @@ public class GeradorDeCupom {
 
 	public static void main(String[] args) {
 
-	    Random r = new Random();
-
-	    String alphabet = "123xyz";
-	    for (int i = 0; i < 50; i++) {
-	     //   System.out.println(alphabet.charAt(r.nextInt(alphabet.length())));
-	    }
-	    
-	    String cupom = RandomStringUtils.randomAlphabetic(5);
-	    cupom = cupom + r.nextInt(25);
-	    System.out.println(cupom);
+		String bia = "biaIND12";
+		String id = bia.substring(bia.indexOf("IND")+3);
+		System.out.println(id);
 	}
 
 }

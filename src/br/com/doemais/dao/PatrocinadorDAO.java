@@ -77,7 +77,7 @@ public class PatrocinadorDAO {
 		ResultSet rs = statement.executeQuery();
 
 		while (rs.next()) {
-			result = this.vinculoCupom(rs.getInt("idCupom"), doadorId);
+			//result = this.vinculoCupom(rs.getInt("idCupom"), doadorId);
 			if(result) {
 				cupom = new Cupom();
 				cupom.setCupomId(rs.getInt("idCupom"));
@@ -86,6 +86,13 @@ public class PatrocinadorDAO {
 				cupom.setCupom(rs.getString("cupom"));
 				cupom.setDescricao(rs.getString("descricao"));
 			}
+			String sql2= "update cupom set doador_id_ind = ? where id = ?";
+
+			PreparedStatement statement2 = conexao.prepareStatement(sql2, Statement.RETURN_GENERATED_KEYS);
+			statement2.setInt(1, doadorId);
+			statement2.setInt(2, cupom.getCupomId());
+
+			int updateCount = statement2.executeUpdate();
 
 		}
 		return cupom;

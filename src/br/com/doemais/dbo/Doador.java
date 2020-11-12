@@ -24,6 +24,9 @@ public class Doador {
 	private String latitude;
 	private String historico;
 	private String codUser;
+	private String cupom;
+	private String quantDoacoes;
+	private String ultimaDoacao;
 	
 	public int getId() {
 		return id;
@@ -145,6 +148,25 @@ public class Doador {
 	    
 	    return codUser;
 	}
+	public String getCupom() {
+		return cupom;
+	}
+	public void setCupom(String cupom) {
+		this.cupom = cupom;
+	}
+	public String getQuantDoacoes() {
+		return quantDoacoes;
+	}
+	public void setQuantDoacoes(String quantDoacoes) {
+		this.quantDoacoes = quantDoacoes;
+	}
+	public String getUltimaDoacao() {
+		return ultimaDoacao;
+	}
+	public void setUltimaDoacao(String ultimaDoacao) {
+		this.ultimaDoacao = ultimaDoacao;
+	}
+	
 	
 	
 	

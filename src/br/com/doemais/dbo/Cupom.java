@@ -68,7 +68,15 @@ public class Cupom {
 	    
 	    return cupom;
 	}
-	
+	public String geradorDeCupomDoador(int doadorId) {
+		
+	    Random r = new Random();
+
+	    String cupom = RandomStringUtils.randomAlphabetic(6);
+	    cupom = cupom + r.nextInt(25) + "IND" + doadorId;
+	    
+	    return cupom;
+	}
 	
 	
 	
