@@ -27,6 +27,7 @@ public class Doador {
 	private String cupom;
 	private String quantDoacoes;
 	private String ultimaDoacao;
+	private String qtdHemocentrosVisitados;
 	
 	public int getId() {
 		return id;
@@ -166,8 +167,11 @@ public class Doador {
 	public void setUltimaDoacao(String ultimaDoacao) {
 		this.ultimaDoacao = ultimaDoacao;
 	}
-	
-	
-	
-	
+	public String getQtdHemocentrosVisitados() {
+		return qtdHemocentrosVisitados;
+	}
+	public void setQtdHemocentrosVisitados(String qtdHemocentrosVisitados) {
+		this.qtdHemocentrosVisitados = qtdHemocentrosVisitados;
+	}
+		
 }

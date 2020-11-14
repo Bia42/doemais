@@ -225,7 +225,15 @@ public class DoadorDAO {
 				"					 inner join agenda_hemocentro b on a.agenda_id = b.id " + 
 				"				where flag_confirmacao = 1 " + 
 				"				group by " + 
-				"				doador_id) x on a.id = x.doador_id WHERE email = ? and senha = ?";
+				"				doador_id) x on a.id = x.doador_id "
+				+ " left join (select " + 
+				"					count (distinct hemocentro_id) qtd_hemocentros_visitado," + 
+				"						doador_id " + 
+				"				from" + 
+				"					doacoes" + 
+				"				group by " + 
+				"					doador_id) y on a.id = y.doador_id"
+				+ " WHERE email = ? and senha = ?";
 
 		PreparedStatement statement = conexao.prepareStatement(sql);
 		statement.setString(1, email);
@@ -253,6 +261,7 @@ public class DoadorDAO {
 			doador.setCodUser(rs.getString("codUser"));
 			doador.setUltimaDoacao(rs.getString("ultima_doacao"));
 			doador.setQuantDoacoes(rs.getString("doacoes"));
+			doador.setQtdHemocentrosVisitados(rs.getString("qtd_hemocentros_visitado"));
 
 			stmtLog = conexao.prepareStatement("exec log_add ?,null,'LOGIN','doador','APP_LOGIN'");
 			stmtLog.setInt(1, rs.getInt("ID"));
