@@ -194,6 +194,7 @@ public class HemocentroServices {
 			} else {
 				int idGerado = hemocentroDAO.addUsuarioHemocentro(userHemo);
 				msg = String.valueOf(idGerado);
+				
 				return Response.status(201).entity("Usuário Cadastrado Com Sucesso").build();
 			}
 

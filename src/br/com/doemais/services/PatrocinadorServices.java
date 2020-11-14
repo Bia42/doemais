@@ -194,9 +194,11 @@ public class PatrocinadorServices {
 		}
 		return lista;
 	}
-
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@POST
 	@Path("/add")
+	@Produces("application/pdf")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET)
 	public Response adduserPatrocinador(Patrocinador pat) {
 		String msg = "";
@@ -208,7 +210,19 @@ public class PatrocinadorServices {
 			// } else {
 			int idGerado = patrocinadorDAO.addPatrocinador(pat);
 			msg = String.valueOf(idGerado);
-			return Response.status(201).entity("Usuário Cadastrado Com Sucesso").build();
+			
+			String arquivoJrxml = "p_contrato";
+			
+			byte[] outputStream = null;
+			Map fillParams = new HashMap(); 
+			fillParams.put("patrocinador_id", idGerado);
+			ReportGenerator pdf = new ReportGenerator();
+			byte[] bytes= pdf.generateJasperReportPDF(httpServletRequest, arquivoJrxml, outputStream, fillParams);
+
+			String nomeRelatorio= arquivoJrxml + ".pdf";
+			
+			return Response.ok(bytes).type("application/pdf").header("Content-Disposition","inline; filename=\"" + nomeRelatorio + "\"").build();
+			
 			// }
 
 		} catch (Exception e) {

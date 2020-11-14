@@ -21,6 +21,7 @@ public class Hemocentro {
 	private Map<String,Double> niveisSangue;
 	private String mes;
 	private String relatorio;
+	private String contrato;
 
 	public Map<String, Double> getNiveisSangue() {
 		return niveisSangue;
@@ -124,6 +125,13 @@ public class Hemocentro {
 	public void setRelatorio(String relatorio) {
 		this.relatorio = relatorio;
 	}
+	public String getContrato() {
+		return contrato;
+	}
+	public void setContrato(String contrato) {
+		this.contrato = contrato;
+	}
+	
 	
 	
 }
