@@ -12,6 +12,7 @@ import br.com.doemais.dbo.Agendados;
 import br.com.doemais.dbo.Cupom;
 import br.com.doemais.dbo.Doacoes;
 import br.com.doemais.dbo.Doador;
+import br.com.doemais.dbo.Usuario;
 
 
 public class DoadorDAO {
@@ -423,6 +424,20 @@ public class DoadorDAO {
 
 		}
 		return cupom;
+	}
+	public void editarDoador(Doador doador) throws Exception {
+		Connection conexao = BDConfig.getConnection();
+
+		String sql = "UPDATE doador SET nome = ?, email = ?, endereco = ?, tipo_Sanguineo = ? WHERE ID = ?";
+
+		PreparedStatement statement = conexao.prepareStatement(sql);
+		statement.setString(1, doador.getNome());
+		statement.setString(2, doador.getEmail());
+		statement.setString(3, doador.getEndereco());
+		statement.setString(4, doador.getTipoSanguineo());
+		statement.setInt(5, doador.getId());
+
+		statement.execute();
 	}
 	
 	

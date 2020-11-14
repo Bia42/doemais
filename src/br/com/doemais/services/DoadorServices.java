@@ -139,7 +139,25 @@ public class DoadorServices {
 
 		return Response.status(404).entity(msg).build();
 	}
-	
+	@POST
+	@Path("/updateDoador")
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	public Response updateDoador(Doador doador) {
+		String msg = "";
+
+		try {
+
+			doadorDAO.editarDoador(doador);
+			
+			return Response.status(200).build();
+		} catch (Exception e) {
+			msg = "Erro ao atualizar o usuário, entre em contato com o administrador!" + e.getMessage();
+			e.printStackTrace();
+		}
+
+		return Response.status(404).entity(msg).build();
+	}
+		
 	@POST
 	@Path("/addAgenda")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
