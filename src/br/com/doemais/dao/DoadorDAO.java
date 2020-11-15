@@ -184,13 +184,13 @@ public class DoadorDAO {
 		Connection conexao = BDConfig.getConnection();
 
 		String sql = "select "
-				+ "		c.nome, d.razao_social, b.horario_doacao, a.flag_checkin, a.id agendaId, c.doador doadorId"
+				+ "		c.nome, d.razao_social, b.horario_doacao, a.flag_checkin, a.id agendaId, c.id doadorId"
 				+ "	from "
 				+ "		agendados a" + 
 				"		inner join agenda_hemocentro b on a.agenda_id = b.id "
 				+ "		inner join doador c on c.id = a.doador_id "
 				+ "		inner join hemocentro d on d.id = b.hemocentro_id "
-				+ " where a.doador_id = ? ";
+				+ " where a.doador_id = ? and a.flag_checkin = 0";
 
 		PreparedStatement statement = conexao.prepareStatement(sql);
 		statement.setInt(1, doadorId);
