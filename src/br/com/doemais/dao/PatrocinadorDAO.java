@@ -20,7 +20,35 @@ public class PatrocinadorDAO {
 
 		Connection conexao = BDConfig.getConnection();
 
-		String sql = "select * from Patrocinador";
+		String sql = "select * from Patrocinador where status = 1";
+
+		PreparedStatement statement = conexao.prepareStatement(sql);
+		ResultSet rs = statement.executeQuery();
+
+		while (rs.next()) {
+			Patrocinador pat = new Patrocinador();
+			pat.setId(rs.getInt("ID"));
+			pat.setRazaoSocial(rs.getString("razao_social"));
+			pat.setNivel(rs.getString("nivel"));
+			pat.setCnpj(rs.getString("cnpj"));
+			pat.setEndereco(rs.getString("endereco"));
+			pat.setCidade(rs.getString("cidade"));
+			pat.setEstado(rs.getString("estado"));
+			pat.setNumero(rs.getString("numero"));
+			pat.setCep(rs.getString("cep"));
+			pat.setComplemento(rs.getString("complemento"));
+			pat.setLogo(new String(rs.getBytes("logo"), "UTF-8"));
+			lista.add(pat);
+		}
+
+		return lista;
+	}
+	public List<Patrocinador> listarPatrocinadoresPendentes() throws Exception {
+		List<Patrocinador> lista = new ArrayList<>();
+
+		Connection conexao = BDConfig.getConnection();
+
+		String sql = "select * from Patrocinador where status is null";
 
 		PreparedStatement statement = conexao.prepareStatement(sql);
 		ResultSet rs = statement.executeQuery();
@@ -177,7 +205,7 @@ public class PatrocinadorDAO {
 
 		Connection conexao = BDConfig.getConnection();
 
-		String sql = "SELECT * FROM Patrocinador WHERE email = ? and senha = ?";
+		String sql = "SELECT * FROM Patrocinador WHERE email = ? and senha = ? and status = 1";
 
 		PreparedStatement statement = conexao.prepareStatement(sql);
 		statement.setString(1, email);
@@ -222,7 +250,7 @@ public class PatrocinadorDAO {
 	public boolean verificarUserExistente(String email) throws Exception {
 		Connection conexao = BDConfig.getConnection();
 
-		String sql = "SELECT * FROM Patrocinador WHERE email = ?";
+		String sql = "SELECT * FROM Patrocinador WHERE email = ? and status is null or status = 0";
 
 		PreparedStatement statement = conexao.prepareStatement(sql);
 		statement.setString(1, email);
@@ -358,6 +386,55 @@ public class PatrocinadorDAO {
 		statement.setInt(2, cupomId);
 
 		int updateCount = statement.executeUpdate();
+		
+		if(updateCount == 1) {
+			return true;
+		}
+		return false;
+	}
+	public boolean confirmaca(int hemocentroId) throws Exception {
+		Connection conexao = BDConfig.getConnection();
+
+		String sql = " update " + 
+				"	patrocinador" + 
+				" set" + 
+				"	status = '1' " + 	
+				" where id = ?";
+
+		PreparedStatement statement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+		statement.setInt(1, hemocentroId);
+
+		int updateCount = statement.executeUpdate();
+		PreparedStatement stmtLog = null;
+
+		stmtLog = conexao.prepareStatement("exec log_add null,?,'CONF_HEMOCENTRO','agendados','CONFIRMACAO_CHECK_IN'");
+		stmtLog.setInt(1, hemocentroId);
+		stmtLog.execute();
+		
+		if(updateCount == 1) {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean excluir(int hemocentroId) throws Exception {
+		Connection conexao = BDConfig.getConnection();
+
+		String sql = " update " + 
+				"	patrocinador" + 
+				" set" + 
+				"	status = '0' " + 	
+				" where id = ?";
+
+		PreparedStatement statement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+		statement.setInt(1, hemocentroId);
+
+		int updateCount = statement.executeUpdate();
+		PreparedStatement stmtLog = null;
+
+		stmtLog = conexao.prepareStatement("exec log_add null,?,'CONF_HEMOCENTRO','agendados','CONFIRMACAO_CHECK_IN'");
+		stmtLog.setInt(1, hemocentroId);
+		stmtLog.execute();
 		
 		if(updateCount == 1) {
 			return true;

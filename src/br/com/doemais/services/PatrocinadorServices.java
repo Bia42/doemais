@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
 
 import br.com.doemais.components.ReportGenerator;
 import br.com.doemais.dao.PatrocinadorDAO;
+import br.com.doemais.dbo.Agendados;
 import br.com.doemais.dbo.Campanhas;
 import br.com.doemais.dbo.Cupom;
 import br.com.doemais.dbo.Hemocentro;
@@ -49,9 +50,7 @@ public class PatrocinadorServices {
 				return Response.status(200).entity(patLogado).build();
 			}
 			if (patrocinadorDAO.verificarUserExistente(pat.getEmail())) {
-				return Response.status(404).entity("Senha incorreta!").build();
-			} else {
-				return Response.status(404).entity("Usuário não cadastrado").build();
+				return Response.status(404).entity("Patrocinador pendente de avaliação - Verifique com o suporte seu status").build();
 			}
 
 		} catch (Exception e) {
@@ -67,6 +66,18 @@ public class PatrocinadorServices {
 		List<Patrocinador> lista = null;
 		try {
 			lista = patrocinadorDAO.listarPatrocinadores();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
+	@GET
+	@Path("/listPatrocinadoresPendentes")
+	@Produces(MediaType.APPLICATION_JSON + CHARSET)
+	public List<Patrocinador> listarPatPendentes() {
+		List<Patrocinador> lista = null;
+		try {
+			lista = patrocinadorDAO.listarPatrocinadoresPendentes();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -254,6 +265,40 @@ public class PatrocinadorServices {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return Response.status(404).entity(msg).build();
+	}
+	@POST
+	@Path("/confirmacao")
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET)
+	public Response confirmacaoCheckIn(Patrocinador agen) {
+		String msg = "";
+		try {
+			boolean response = patrocinadorDAO.confirmaca(agen.getId());
+			if (response == true)
+				return Response.status(200).build();
+		} catch (Exception e) {
+			msg = "Erro ao realizar checkin";
+			e.printStackTrace();
+		}
+
+		return Response.status(404).entity(msg).build();
+	}
+	
+	@POST
+	@Path("/excluir")
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET)
+	public Response desmarcarAgendamento(Patrocinador agen) {
+		String msg = "";
+
+		try {
+			boolean response = patrocinadorDAO.excluir(agen.getId());
+			if (response == true)
+				return Response.status(200).build();
+		} catch (Exception e) {
+			msg = "Erro ao realizar checkin";
+			e.printStackTrace();
+		}
+
 		return Response.status(404).entity(msg).build();
 	}
 
