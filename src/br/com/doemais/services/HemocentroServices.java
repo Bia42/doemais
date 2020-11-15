@@ -208,7 +208,7 @@ public class HemocentroServices {
 	@POST
 	@Path("/addAgenda")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	public Response addAgenda(AtendimentoHemocentro agenda) {
+	public Response addAgenda(AtendimentoHemocentro agenda) throws Exception {
 		String msg = "";
 
 		try {
@@ -218,10 +218,8 @@ public class HemocentroServices {
 			return Response.status(201).entity("Agenda gerada com sucesso!").build();
 
 		} catch (Exception e) {
-			msg = "Erro ao adicionar o usuário, entre em contato com o administrador!" + e.getMessage();
+			throw new Exception(e);
 		}
-
-		return Response.status(404).entity(msg).build();
 	}
 	
 	@POST

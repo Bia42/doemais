@@ -9,7 +9,9 @@ import java.util.logging.Logger;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.mail.Authenticator;
+import javax.mail.BodyPart;
 import javax.mail.Message;
+import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
@@ -18,7 +20,10 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.mail.internet.PreencodedMimeBodyPart;
 import javax.mail.util.ByteArrayDataSource;
+
+import org.apache.commons.codec.binary.Base64;
 
 import com.sun.mail.util.MailSSLSocketFactory;
 
@@ -48,7 +53,7 @@ public class JavaMailUtil {
 	  	           }
 	  	      });
 	    
-	    Message message = prepareMessage(session, myAccountEmail, recepient, corpo, imagem);
+	    Message message = prepareMessage3(session, myAccountEmail, recepient, corpo, imagem);
 	
 	    try {
 			Transport.send(message);
@@ -61,55 +66,102 @@ public class JavaMailUtil {
 	
 	private static Message prepareMessage(Session session, String myAccountEmail, String recepient, String corpo, String imagem) {
 		try {
+		    MimeMultipart corpo2 = new MimeMultipart("related");
+
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(myAccountEmail));
 			message.setRecipient(Message.RecipientType.TO, new InternetAddress(recepient));
 			message.setSubject("Venha doar Sangue Conosco - Hemocentro Unicamp");
 			message.setText(corpo);
+			
+			String body = imagem.replace("data:image/png;base64","");             
+			
+			MimeBodyPart filePart = new PreencodedMimeBodyPart("base64");
+			filePart.setFileName("screenshot.png");
+			//This is Needed if you want to show as an html element in the page
+			filePart.setHeader("Content-ID", "<screenshot>");
+			filePart.setText(body);
+			corpo2.addBodyPart(filePart);
+			message.setContent(corpo2);
+
 			return message;
 		}catch(Exception ex) {
 			Logger.getLogger(JavaMailUtil.class.getName()).log(Level.SEVERE,null,ex);
 		}
 		return null;
 	}
-	
+ 
+    
 	private static Message prepareMessage2(Session session, String myAccountEmail, String recepient, String corpo, String imagem) {
 		try {
-		    MimeMultipart corpo2 = new MimeMultipart("alternative");
+		    MimeMultipart corpo2 = new MimeMultipart("related");
+
 
 			MimeBodyPart mbp1 = new MimeBodyPart();
-
-			byte[] bytes = new String(imagem.substring(imagem.indexOf(",") + 1)).getBytes("UTF-8");
 			
-			ByteArrayOutputStream baos = new ByteArrayOutputStream(bytes.length);
-			baos.write(bytes, 0, bytes.length);
-						
-			MimeBodyPart imagePart = new MimeBodyPart();   
-			// Loading the image   
-			DataSource ds = new ByteArrayDataSource(baos.toByteArray(), "image/png");   
-			imagePart.setDataHandler(new DataHandler(ds));   
-			imagePart.setFileName("selo.png");   
-			// Setting the header   
-			imagePart.setHeader("Content-ID", "<image>");   
-			imagePart.setDisposition("inline");  
+			String body = imagem.replace("data:image/png;base64","");             
+			
+			MimeBodyPart filePart = new PreencodedMimeBodyPart("base64");
+			filePart.setFileName("image.png");
+			//This is Needed if you want to show as an html element in the page
+			filePart.setHeader("Content-ID", "<image>");
+			filePart.setText(body);
+			filePart.setDisposition("inline");  
 					    
 			if(corpo2 == null)
 			   corpo2 = new MimeMultipart("alternative");
 					    
-			corpo2.addBodyPart(imagePart); 
+			corpo2.addBodyPart(filePart); 
 					    
-			String tag_imagem = "<img alt='Selo' src='cid:image' />";
+			String tag_imagem = "<img alt='Image' src='cid:image' />";
 
 			String htmlText = tag_imagem + "<br><br>" + "Teste" + "<br>"
 								+ "teste2";
 
 			mbp1.setContent(htmlText, "text/html");
-			
+			corpo2.addBodyPart(filePart); 
+
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(myAccountEmail));
 			message.setRecipient(Message.RecipientType.TO, new InternetAddress(recepient));
 			message.setSubject("My first email");
 			message.setContent(corpo2);
+			return message;
+		}catch(Exception ex) {
+			Logger.getLogger(JavaMailUtil.class.getName()).log(Level.SEVERE,null,ex);
+		}
+		return null;
+	}
+	private static Message prepareMessage3(Session session, String myAccountEmail, String recepient, String corpo, String imagem) {
+		try {
+		    MimeMultipart corpo2 = new MimeMultipart("related");
+
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(myAccountEmail));
+			message.setRecipient(Message.RecipientType.TO, new InternetAddress(recepient));
+			message.setSubject("Venha doar Sangue Conosco - Hemocentro Unicamp");
+			message.setText(corpo);
+			
+			String body = imagem.replace("data:image/png;base64","");             
+			
+			MimeMultipart multipart = new MimeMultipart("related");
+	        BodyPart messageBodyPart = new MimeBodyPart();
+	        String htmlText = "<p></p> <h4>" + corpo +"</h4>" + "<img src=\"cid:image\">";
+	        messageBodyPart.setContent(htmlText, "text/html");
+	        multipart.addBodyPart(messageBodyPart);
+	        try {
+	            messageBodyPart = new MimeBodyPart();
+	            byte[] imgBytes = Base64.decodeBase64(body);
+	            ByteArrayDataSource dSource = new ByteArrayDataSource(imgBytes, "image/*");
+	            messageBodyPart.setDataHandler(new DataHandler(dSource));
+	            messageBodyPart.setHeader("Content-ID","<image>");
+	            multipart.addBodyPart(messageBodyPart);
+	            message.setContent(multipart);
+	        } catch (Exception e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        }
+
 			return message;
 		}catch(Exception ex) {
 			Logger.getLogger(JavaMailUtil.class.getName()).log(Level.SEVERE,null,ex);

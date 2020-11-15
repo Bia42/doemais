@@ -456,7 +456,7 @@ public class HemocentroDAO {
 			String sql = "select "
 					+ "		 email, nome"
 					+ "	from "
-					+ "		doador ";
+					+ "		doador";
 			PreparedStatement statement;
 			
 			try {
@@ -464,7 +464,7 @@ public class HemocentroDAO {
 				ResultSet rs = statement.executeQuery();
 				
 				while (rs.next()) {
-					JavaMailUtil.sendMail(rs.getString("email"), "Olá, " + rs.getString("nome") + '\n' + campanha.getDescricao(), campanha.getConteudo());
+					JavaMailUtil.sendMail(rs.getString("email"), "Olá, " + rs.getString("nome") + '!' + '\n' + campanha.getDescricao(), campanha.getConteudo());
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
