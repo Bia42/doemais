@@ -221,10 +221,8 @@ public class DoadorDAO {
 				" from " + 
 				"	Doador a " + 
 				"	left join (select " + 
-				"				count(*) doacoes, doador_id, max(horario_doacao) ultima_doacao " + 
-				"				from agendados a " + 
-				"					 inner join agenda_hemocentro b on a.agenda_id = b.id " + 
-				"				where flag_confirmacao = 1 " + 
+				"				count(*) doacoes, doador_id, max(data_hora) ultima_doacao " + 
+				"				from doacoes" + 
 				"				group by " + 
 				"				doador_id) x on a.id = x.doador_id "
 				+ " left join (select " + 
